@@ -19,16 +19,29 @@ jobs:
       displayName: 'Black formatting check..'
 
   - job: pytest
-    pool:
-      vmImage: 'ubuntu-latest'
+
     strategy:
       matrix:
-        LinuxPackageInstallPython37:
+        LinuxTestPython37:
           python.version: '3.7'
-        LinuxPackageInstallPython38:
+          vmImage: 'ubuntu-latest'
+        LinuxTestPython38:
           python.version: '3.8'
-        LinuxPackageInstallPython39:
-          python.version: '3.9' 
+          vmImage: 'ubuntu-latest'
+        LinuxTestPython39:
+          python.version: '3.9'
+          vmImage: 'ubuntu-latest'
+        WinTestPython37:
+          python.version: '3.7'
+          vmImage: 'vs2017-win2016'
+        WinTestPython38:
+          python.version: '3.8'
+          vmImage: 'vs2017-win2016'
+        WinTestPython39:
+          python.version: '3.9'
+          vmImage: 'vs2017-win2016'
+    pool:
+      vmImage: $(vmImage)
     steps:
     - task: UsePythonVersion@0
       inputs:
