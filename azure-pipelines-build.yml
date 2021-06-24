@@ -1,6 +1,6 @@
 # This will run the pipeline whenever anything new is committed to master
 trigger:
-  - master
+  - main
 
 jobs:
   - job:
