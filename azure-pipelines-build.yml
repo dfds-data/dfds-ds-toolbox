@@ -6,19 +6,11 @@ jobs:
   - job:
     pool:
       vmImage: 'ubuntu-latest'
-    strategy:
-      matrix:
-        LinuxPackageInstallPython37:
-          python.version: '3.7'
-        LinuxPackageInstallPython38:
-          python.version: '3.8'
-        LinuxPackageInstallPython39:
-          python.version: '3.9'
     steps:
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '$(python.version)'
-      displayName: 'Use Python $(python.version)'
+        versionSpec: '3.8'
+      displayName: 'Use Python 3.8'
 
     - script: |
         pip install wheel
