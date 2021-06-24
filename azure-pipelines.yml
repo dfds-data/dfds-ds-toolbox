@@ -7,8 +7,8 @@ jobs:
     steps:
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '$(python.version)'
-      displayName: '$(python.version)'
+        versionSpec: '3.8'
+      displayName: '3.8'
     - script: |
         python -m pip install --upgrade pip
         pip install -r requirements-dev.txt
