@@ -4,7 +4,6 @@ jobs:
   - job: black
     pool:
       vmImage: 'ubuntu-latest'
-
     steps:
     - task: UsePythonVersion@0
       inputs:
@@ -15,12 +14,20 @@ jobs:
         pip install -r requirements-dev.txt
       displayName: 'Install dependencies'
     - script: |
-        python -m black --check src/
+        python -m black --check ds_toolbox/
       displayName: 'Black formatting check..'
 
   - job: pytest
     pool:
       vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        LinuxPackageInstallPython37:
+          python.version: '3.7'
+        LinuxPackageInstallPython38:
+          python.version: '3.8'
+        LinuxPackageInstallPython39:
+          python.version: '3.9' 
     steps:
     - task: UsePythonVersion@0
       inputs:
@@ -32,26 +39,5 @@ jobs:
         pip install -r requirements.txt
       displayName: 'Installing dependencies..'
     - script: |
-        python -m pytest
+        python -m pytest ds_toolbox
       displayName: 'pytest'
-
-  - job: build
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(python.version)'
-      displayName: '$(python.version)'
-    - script: |
-        python setup.py sdist
-      displayName: 'Artifact creation..'
-    - task: CopyFiles@2
-      inputs:
-        targetFolder: '$(Build.ArtifactStagingDirectory)'
-      displayName: 'Copy artifact'
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'dist'
-        publishLocation: 'Container'

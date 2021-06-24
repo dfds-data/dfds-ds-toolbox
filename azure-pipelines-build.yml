@@ -1,0 +1,39 @@
+# This will run the pipeline whenever anything new is committed to master
+trigger:
+  - master
+
+jobs:
+  - job:
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      matrix:
+        LinuxPackageInstallPython37:
+          python.version: '3.7'
+        LinuxPackageInstallPython38:
+          python.version: '3.8'
+        LinuxPackageInstallPython39:
+          python.version: '3.9'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+      displayName: 'Use Python $(python.version)'
+
+    - script: |
+        pip install wheel
+        pip install twine
+      displayName: 'install twine'
+
+    - task: TwineAuthenticate@1
+      displayName: 'Twine Authenticate'
+      inputs:
+        artifactFeed: smartdata
+
+    - script: |
+        python setup.py bdist_wheel
+      displayName: 'build'
+      
+    - script: |
+        python -m twine upload -r smartdata --config-file $(PYPIRC_PATH) dist/*.whl
+      displayName: 'upload'
