@@ -11,15 +11,12 @@ setup(
     long_description=long_description,
     author="Ida Friisberg, Uriel Chareca , Dennis Hansen",
     author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com",
-    install_requires=[
-        "scikit-learn",
-        "pandas"
-    ],
+    install_requires=["scikit-learn", "pandas"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Data Scientists",
         "Programming Language :: Python 3.7",
         "Programming Language :: Python 3.8",
-        "Programming Language :: Python 3.9"
+        "Programming Language :: Python 3.9",
     ],
 )
