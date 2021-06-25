@@ -22,18 +22,9 @@ pytest
 ```
 
 ## Install this library in another repo
-*TODO*
-- Add Azure DevOps feed to index
-- Authenticate
-- Pip install
+See [this guide in the wiki](https://dfds.visualstudio.com/Smart%20Data/_wiki/wikis/Smart-Data.wiki/2779/Installing-a-package-from-the-smartdata-artifact-feed)
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
 
 # Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+We want this library to be useful across many data science projects. 
+If you have some standard utilities that you keep using in your projects, please add them here and make a PR. 
