@@ -2,11 +2,30 @@
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Install locally
+Make a virtual environment:
+```shell
+python -m venv venv
+venv\Scripts\activate.bat
+```
+Install dependencies
+```shell
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+pre-commit install
+pip install -e .
+```
+
+Run tests to see everything working
+```shell
+pytest
+```
+
+## Install this library in another repo
+*TODO*
+- Add Azure DevOps feed to index
+- Authenticate
+- Pip install
 
 # Build and Test
 TODO: Describe and show how to build your code and run the tests. 
