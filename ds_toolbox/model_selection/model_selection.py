@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import mean_squared_error, roc_curve, auc, accuracy_score
 from sklearn.base import BaseEstimator, ClassifierMixin
 
 
