@@ -1,8 +1,8 @@
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 
 
+# Define switcher class for classification tasks
 class ClfSwitcher(BaseEstimator, ClassifierMixin):
 
     def __init__(
@@ -28,6 +28,34 @@ class ClfSwitcher(BaseEstimator, ClassifierMixin):
 
     def predict_proba(self, X):
         return self.estimator.predict_proba(X)
+
+
+    def score(self, X, y):
+        return self.estimator.score(X, y)
+
+
+# Define switcher class for regression tasks
+class RegSwitcher(BaseEstimator, RegressorMixin):
+
+    def __init__(
+        self, 
+        estimator = RandomForestRegressor(),
+    ):
+        """
+        A Custom BaseEstimator that can switch between regressors.
+        :param estimator: sklearn object - The regressor
+        """ 
+
+        self.estimator = estimator
+
+
+    def fit(self, X, y=None, **kwargs):
+        self.estimator.fit(X, y)
+        return self
+
+
+    def predict(self, X, y=None):
+        return self.estimator.predict(X)
 
 
     def score(self, X, y):
