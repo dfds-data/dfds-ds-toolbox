@@ -2,7 +2,6 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 
 
-# Define switcher class for classification tasks
 class ClfSwitcher(BaseEstimator, ClassifierMixin):
 
     def __init__(
@@ -34,7 +33,6 @@ class ClfSwitcher(BaseEstimator, ClassifierMixin):
         return self.estimator.score(X, y)
 
 
-# Define switcher class for regression tasks
 class RegSwitcher(BaseEstimator, RegressorMixin):
 
     def __init__(
