@@ -1,6 +1,28 @@
 # Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+This repo is intended to contain a packaged toolbox of some neat, frequently-used data science code snippets and functions. The intention is that the classes should be compatible with the [sklearn](https://scikit-learn.org/stable/) library.
 
+Already implemented:
+* Feature selector for regression problems
+* Model selector for regression and classification problems
+
+To be implemented in the future:
+
+* Preprocessing 
+    * Imbalanced datasets
+    * Outlier detection & handling
+    * Missing value imputation
+
+* Feature generation
+    * Binning
+    * Type variables, create multiple features
+    * Timestamp, seasonality variables
+    * Object: onehot, grouping, etc.
+
+* Performance analysis (plots, summary, error analysis)
+
+More ideas might arise in the future and should be added to the list.
+
+A guide on how to install the package and some working examples of how to use the classes can be found in later sections. 
 # Getting Started
 ## Install locally
 Make a virtual environment:
