@@ -4,6 +4,7 @@ This repo is intended to contain a packaged toolbox of some neat, frequently-use
 Already implemented:
 * Feature selector for regression problems
 * Model selector for regression and classification problems
+* Profiling tool for generating stats files of the execution time of a function 
 
 To be implemented in the future:
 
@@ -214,7 +215,25 @@ gs.fit(train[model_cols], train['target'])
 ```
 
 Again, using the functionality of the [```GridSearchCV```](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) module, the results can be accesed as described above.
+## Profiling
+In the process of speeding up our pipelines, it is really handy to get more information about the execution time of the individual parts of our code (profiling), which can help us to spot bottlenecks. An approach one could follow is using the built-in module in python [```cProfile```](https://docs.python.org/3/library/profile.html). An example of implementation can be found in  with the ```@profileit()``` decorator:
 
+We can then add the decorator to whatever function we want to profile:
+```python
+from ds_toolbox.profiling.profiling import profileit
+from pathlib import Path
+
+@ profileit(profiles_path=Path("profiles/"), profile_name="main_script_profile")
+def main():
+...
+
+if __name__ == "__main__":
+    main()
+```
+And visualize the profiles with tools like [```snakeviz```](https://jiffyclub.github.io/snakeviz/):
+```cmd
+snakeviz main_script_profile.stats
+``` 
 # Contribute
 We want this library to be useful across many data science projects.
 If you have some standard utilities that you keep using in your projects, please add them here and make a PR.
