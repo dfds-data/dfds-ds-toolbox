@@ -7,7 +7,7 @@ setup(
     name="ds_toolbox",
     packages=["ds_toolbox"],
     keywords=["ds_toolbox", "data science"],
-    version="0.0.2",
+    version="0.0.3",
     long_description=long_description,
     author="Ida Friisberg, Uriel Chareca , Dennis Hansen",
     author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com",
