@@ -2,7 +2,7 @@
 trigger: none
 
 jobs:
-  - job: pre-commit
+  - job: precommit
     pool:
       vmImage: 'ubuntu-latest'
     steps:
