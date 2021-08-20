@@ -1,5 +1,5 @@
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 
 class ClfSwitcher(BaseEstimator, ClassifierMixin):

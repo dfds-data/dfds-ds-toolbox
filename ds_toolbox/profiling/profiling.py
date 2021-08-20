@@ -1,6 +1,6 @@
 import cProfile
-from pathlib import Path
 from functools import wraps
+from pathlib import Path
 
 
 def profileit(profiles_path: Path, profile_name: str):

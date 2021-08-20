@@ -1,13 +1,12 @@
+import warnings
+
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import Lasso
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import ShuffleSplit
-from sklearn.metrics import mean_absolute_error
-import warnings
 import statsmodels.api as sm
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import Lasso
+from sklearn.metrics import mean_absolute_error
+from sklearn.model_selection import ShuffleSplit
 
 
 def stepwise_selection(X, y, initial_list=[], threshold_in=0.01, threshold_out=0.05, verbose=False):

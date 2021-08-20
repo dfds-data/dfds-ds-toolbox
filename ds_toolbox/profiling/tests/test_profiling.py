@@ -1,7 +1,8 @@
-from ds_toolbox.profiling.profiling import profileit
-from pathlib import Path
 import time
+
 import pytest
+
+from ds_toolbox.profiling.profiling import profileit
 
 
 def test_profiling_successful(tmp_path):
