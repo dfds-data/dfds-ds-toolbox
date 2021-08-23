@@ -15,7 +15,7 @@ jobs:
         pip install -r requirements-dev.txt
       displayName: 'Install dependencies'
     - script: |
-        python -m pre-commit run --all-files
+        pre-commit run --all-files
       displayName: 'Pre-commit check on all files'
 
   - job: pytest
