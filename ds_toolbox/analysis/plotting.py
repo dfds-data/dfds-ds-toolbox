@@ -1,5 +1,5 @@
-import seaborn as sns
 import pandas as pd
+import seaborn as sns
 
 
 def plot_prediction_histogram(y_true, y_pred):

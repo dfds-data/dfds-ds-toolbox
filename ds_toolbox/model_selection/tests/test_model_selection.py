@@ -1,11 +1,10 @@
-from ds_toolbox.model_selection.model_selection import RegSwitcher, ClfSwitcher
 import pandas as pd
-import numpy as np
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
-from sklearn.linear_model import SGDClassifier, LinearRegression
+from sklearn.linear_model import LinearRegression, SGDClassifier
 from sklearn.model_selection import GridSearchCV
-from sklearn.pipeline import Pipeline
+
+from ds_toolbox.model_selection.model_selection import ClfSwitcher, RegSwitcher
 
 
 def get_data(model_type):

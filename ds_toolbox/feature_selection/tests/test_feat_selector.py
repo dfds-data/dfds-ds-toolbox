@@ -1,6 +1,8 @@
-from ds_toolbox.feature_selection.feat_selector import RegFeatureSelector
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+from ds_toolbox.feature_selection.feat_selector import RegFeatureSelector
+
 
 # import data
 def get_data():
