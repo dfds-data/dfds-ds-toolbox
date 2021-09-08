@@ -148,7 +148,7 @@ class RegFeatureSelector:
             "stepwise",
         ]
 
-    def get_params(self, deep=True):
+    def get_params(self):
         return {"strategy": self.strategy, "threshold": self.threshold}
 
     def set_params(self, **params):
