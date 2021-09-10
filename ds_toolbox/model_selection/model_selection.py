@@ -14,11 +14,11 @@ class ClfSwitcher(BaseEstimator, ClassifierMixin):
 
         self.estimator = estimator
 
-    def fit(self, X, y=None, **kwargs):
+    def fit(self, X, y=None):
         self.estimator.fit(X, y)
         return self
 
-    def predict(self, X, y=None):
+    def predict(self, X):
         return self.estimator.predict(X)
 
     def predict_proba(self, X):
@@ -40,11 +40,11 @@ class RegSwitcher(BaseEstimator, RegressorMixin):
 
         self.estimator = estimator
 
-    def fit(self, X, y=None, **kwargs):
+    def fit(self, X, y=None):
         self.estimator.fit(X, y)
         return self
 
-    def predict(self, X, y=None):
+    def predict(self, X):
         return self.estimator.predict(X)
 
     def score(self, X, y):
