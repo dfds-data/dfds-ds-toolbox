@@ -45,8 +45,23 @@ pytest
 ```
 
 ## Install this library in another repo
-See [this guide in the wiki](https://dfds.visualstudio.com/Smart%20Data/_wiki/wikis/Smart-Data.wiki/2779/Installing-a-package-from-the-smartdata-artifact-feed)
 
+Make sure your virtual environment is activated, then install the required packages
+```shell
+python -m pip install --upgrade pip
+pip install keyring artifacts-keyring
+```
+If you want to install the package `ds_toolbox` version 3.0, you should run
+```shell
+pip install --extra-index-url=https://dfds.pkgs.visualstudio.com/_packaging/smartdata/pypi/simple/ ds_toolbox==0.3.0
+```
+For more information see [this guide in the wiki](https://dfds.visualstudio.com/Smart%20Data/_wiki/wikis/Smart-Data.wiki/2779/Installing-a-package-from-the-smartdata-artifact-feed)
+
+# Versions
+* 0.1.0 => Inclussion of feat selector and model selector
+* 0.2.0 => Fix bugs to install
+* 0.3.0 => Plotting updates (Univariate, Pred_Real, AUC, Lift)
+Remember to add descriptions of any new versions, please include working examples
 
 # Working examples
 For the working examples in this session we will focus on a regression problem and use the boston dataset from sklearn.
@@ -236,6 +251,101 @@ And visualize the profiles with tools like [```snakeviz```](https://jiffyclub.gi
 snakeviz main_script_profile.stats
 ``` 
 
+## Plotting
+### Univariate plot
+For a list of features separate in bins and analysis the target distribution in both Train and Test
+```
+data_train=X_train.copy()
+data_train['target']=y_train
+
+data_test=X_test.copy()
+data_test['target']=y_test
+from plotting import get_univariate_plots
+
+# plots univariate plots of first 10 columns in data_train
+get_univariate_plots(data=data_train, 
+                     target_col='target', 
+                     features_list=numeric_cols, 
+                     data_test=data_test)
+```
+### Regression results (Pred vs Real)
+Given a trained model, it showcase the performance, along a error band
+```
+from sklearn.ensemble import RandomForestRegressor
+
+est=RandomForestRegressor()
+
+# CV predict
+from sklearn.model_selection import cross_val_predict
+y_pred = cross_val_predict(est,  X_train[numeric_cols], y_train, n_jobs=-1, verbose=0)
+
+from plotting import plot_regression_results
+
+mae=(np.abs(y_train - y_pred) ).mean(axis=0)
+mae_text=(r'$MAE={:.2f}$').format(mae)
+
+plot_regression_results(
+        y_train, y_pred,
+        title='RF Model',
+        extra_text=mae_text)
+```
+
+### ROC
+Given a trained model, it showcase the accumulative lift/gain curve of both train and test data. Remember to include a predProba field
+```
+from sklearn import datasets, metrics, model_selection, svm
+X, y = datasets.make_classification(random_state=0)
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=0)
+clf = svm.SVC(random_state=0,probability=True
+             )
+clf.fit(X_train, y_train)
+
+dataTrain=pd.DataFrame(X_train.copy())
+dataTrain['target']=list(y_train)
+dataTrain['predProba']=list(clf.predict_proba(X_train)[:,1])
+print('dataTrain',dataTrain.shape)
+
+dataTest=pd.DataFrame(X_test.copy())
+dataTest['predProba']=list(clf.predict_proba(X_test)[:,1])
+dataTest['target']=list(y_test)
+print('dataTest',dataTest.shape)
+
+from plotting import liftCurvePlot
+
+f=liftCurvePlot(dataTrain=dataTrain,dataTest=dataTest,noBins=10)
+
+```
+
+### Lift/Gains
+Given a trained model, it showcase the Area under the curve of both train and test data. Remember to include a predProba field
+```
+from sklearn import datasets, metrics, model_selection, svm
+X, y = datasets.make_classification(random_state=0)
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=0)
+clf = svm.SVC(random_state=0,probability=True
+             )
+clf.fit(X_train, y_train)
+
+dataTrain=pd.DataFrame(X_train.copy())
+dataTrain['target']=list(y_train)
+dataTrain['predProba']=list(clf.predict_proba(X_train)[:,1])
+print('dataTrain',dataTrain.shape)
+
+dataTest=pd.DataFrame(X_test.copy())
+dataTest['predProba']=list(clf.predict_proba(X_test)[:,1])
+dataTest['target']=list(y_test)
+print('dataTest',dataTest.shape)
+
+from imp import reload
+import plotting
+reload(plotting)
+from plotting import rocCurvePlot
+
+f=rocCurvePlot(dataTrain=dataTrain,dataTest=dataTest)
+
+```
 # Contribute
 We want this library to be useful across many data science projects.
 If you have some standard utilities that you keep using in your projects, please add them here and make a PR.
