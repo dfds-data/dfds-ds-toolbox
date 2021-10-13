@@ -7,10 +7,10 @@ setup(
     name="ds_toolbox",
     packages=find_packages(),
     keywords=["ds_toolbox", "data science"],
-    version="0.3.0",
+    version="0.4.0",
     long_description=long_description,
     author="Ida Friisberg, Uriel Chareca , Dennis Hansen",
-    author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com",
+    author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com, pacaa@dfds.com",
     install_requires=["scikit-learn", "pandas", "numpy", "seaborn"],
     classifiers=[
         "Development Status :: 3 - Alpha",
