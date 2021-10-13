@@ -251,6 +251,34 @@ And visualize the profiles with tools like [```snakeviz```](https://jiffyclub.gi
 snakeviz main_script_profile.stats
 ``` 
 
+## Logging
+The logging module allows you to easily log in console or/and in a debug file with coloured message levels and timestamps:
+
+Usage:
+```python
+>>> from ds_toolbox.logging.logging import init_logger
+>>> logger = init_logger()
+>>> logger.info("Starting some work.")
+>>> logger.critical("Something BAD happened.")
+```
+It will output: 
+
+[2021-10-13 14:57:32,346] <span style="color:blue">INFO</span>     test_log - Starting some work.                    
+[2021-10-13 14:57:32,394] <span style="color:red">CRITICAL</span> test_log - Something BAD happened.  
+
+If you want to log the messages on a different level than DEBUG (default) use:
+```python
+>>> logger = init_logger(stream_level="INFO")
+>>> logger.debug("This message will not be logged.")
+>>> logger.info("Starting some work.")
+```
+If you want to save additionally the log the messages into a file use:
+```python
+>>> logger = init_logger(stream_level="INFO", debug_file="path/log_files.log")
+>>> logger.debug("Logging something to a file.")
+>>> logger.info("Logging something to both terminal and file.")
+```
+
 ## Plotting
 ### Univariate plot
 For a list of features separate in bins and analysis the target distribution in both Train and Test
