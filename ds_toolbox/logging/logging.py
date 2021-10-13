@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from rich.logging import RichHandler
 
-# Richhandler already provides coloured asctime and meassage level
+# Richhandler already provides coloured asctime and message level
 STANDARD_FORMAT = "%(module)s - %(message)s"
 # A default dict is used in case we want to add different formats for different levels
 LOG_FORMATS = defaultdict(
