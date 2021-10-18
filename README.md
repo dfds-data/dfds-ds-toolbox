@@ -258,15 +258,13 @@ Usage:
 ```python
 >>> from ds_toolbox.logging.logging import init_logger
 >>> logger = init_logger()
->>> logger.info("Starting some work.")
+>>> logger.info("This message will not be logged.")
 >>> logger.critical("Something BAD happened.")
 ```
-It will output: 
-
-[2021-10-13 14:57:32,346] <span style="color:blue">INFO</span>     test_log - Starting some work.                    
+               
 [2021-10-13 14:57:32,394] <span style="color:red">CRITICAL</span> test_log - Something BAD happened.  
 
-If you want to log the messages on a different level than DEBUG (default) use:
+The default value of `stream_level` is set to `"WARNING"`. If you want to log the messages on a different level than `"WARNING"` use:
 ```python
 >>> logger = init_logger(stream_level="INFO")
 >>> logger.debug("This message will not be logged.")

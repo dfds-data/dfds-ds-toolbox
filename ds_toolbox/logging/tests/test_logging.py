@@ -7,20 +7,26 @@ from ds_toolbox.logging.logging import init_logger
 
 
 @pytest.fixture
+def default_logger():
+    """Fixture. Call logger setup with WARNING level(default level)."""
+    return init_logger()
+
+
+@pytest.fixture
 def info_logger():
-    """Fixture. Call cookiecutter logger setup with `info` level."""
+    """Fixture. Call logger setup with INFO level."""
     return init_logger(stream_level="INFO")
 
 
 @pytest.fixture
 def debug_logger():
-    """Fixture. Call cookiecutter logger setup with `debug` level."""
+    """Fixture. Call logger setup with DEBUG level."""
     return init_logger(stream_level="DEBUG")
 
 
 @pytest.fixture
 def debug_file_info_logger(debug_file):
-    """Fixture. Call cookiecutter info logger setup with debug file."""
+    """Fixture. Call info logger setup with debug file."""
     return init_logger(debug_file=debug_file, stream_level="INFO")
 
 
@@ -57,6 +63,15 @@ def test_info_level(info_logger):
         handler for handler in info_logger.handlers if isinstance(handler, RichHandler)
     ]
     assert rich_handler.level == logging.INFO
+    assert isinstance(rich_handler, RichHandler)
+
+
+def test_default_level(default_logger):
+    """Test the handle level is set to WARNING (default value)"""
+    [rich_handler] = [
+        handler for handler in default_logger.handlers if isinstance(handler, RichHandler)
+    ]
+    assert rich_handler.level == logging.WARNING
     assert isinstance(rich_handler, RichHandler)
 
 

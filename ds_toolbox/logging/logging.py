@@ -12,15 +12,15 @@ LOG_FORMATS = defaultdict(
 )
 
 
-def init_logger(name: str = None, stream_level: str = "DEBUG", debug_file=None) -> logging.Logger:
+def init_logger(name: str = None, stream_level: str = "WARNING", debug_file=None) -> logging.Logger:
     """
     Initialize a logger. Set up logging that print to stdout with
-    ``stream_level``. If ``debug_file`` is given set up logging to
-    file with DEBUG level.
+    ``stream_level`` (default value is WARNING). If ``debug_file`` is
+    given set up logging to file with DEBUG level.
 
     Usage:
     >>> logger = init_logger()
-    >>> logger.info("Starting some work.")
+    >>> logger.info("This message will not be logged.")
     >>> logger.critical("Something BAD happened.")
 
     If you want to log the messages on a different level than DEBUG (default) use:
