@@ -1,6 +1,8 @@
 # Introduction 
 This repo is intended to contain a packaged toolbox of some neat, frequently-used data science code snippets and functions. The intention is that the classes should be compatible with the [sklearn](https://scikit-learn.org/stable/) library.
 
+Have a look at https://dfds-dstoolbox-docs.s3.eu-central-1.amazonaws.com/index.html for user guide.
+
 Already implemented:
 * Feature selector for regression problems
 * Model selector for regression and classification problems
