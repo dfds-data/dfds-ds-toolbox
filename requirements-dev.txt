@@ -3,3 +3,4 @@ black==21.6b0
 pre-commit
 jupyter
 jupyterlab
+sphinx==4.2.0
