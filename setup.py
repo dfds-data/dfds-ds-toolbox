@@ -9,7 +9,7 @@ setup(
     keywords=["ds_toolbox", "data science"],
     version="0.4.0",
     long_description=long_description,
-    author="Ida Friisberg, Uriel Chareca , Dennis Hansen, Pablo Canada",
+    author="Ida Friisberg, Uriel Chareca, Dennis Hansen, Pablo Canada",
     author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com, pacaa@dfds.com",
     install_requires=["scikit-learn", "pandas", "numpy", "seaborn", "statsmodels", "rich"],
     classifiers=[
