@@ -5,7 +5,7 @@ with open("README.md") as f:
 
 setup(
     name="ds_toolbox",
-    packages=find_packages(),
+    packages=find_packages(exclude=["*tests*"]),
     keywords=["ds_toolbox", "data science"],
     version="0.4.0",
     long_description=long_description,
