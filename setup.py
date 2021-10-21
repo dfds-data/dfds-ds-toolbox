@@ -5,13 +5,13 @@ with open("README.md") as f:
 
 setup(
     name="ds_toolbox",
-    packages=find_packages(),
+    packages=find_packages(exclude=["*tests*"]),
     keywords=["ds_toolbox", "data science"],
-    version="0.3.0",
+    version="0.4.0",
     long_description=long_description,
-    author="Ida Friisberg, Uriel Chareca , Dennis Hansen",
-    author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com",
-    install_requires=["scikit-learn", "pandas", "numpy", "seaborn"],
+    author="Ida Friisberg, Uriel Chareca, Dennis Hansen, Pablo Canada",
+    author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com, pacaa@dfds.com",
+    install_requires=["scikit-learn", "pandas", "numpy", "seaborn", "statsmodels", "rich"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Data Scientists",
