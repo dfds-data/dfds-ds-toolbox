@@ -375,3 +375,27 @@ f=rocCurvePlot(dataTrain=dataTrain,dataTest=dataTest)
 # Contribute
 We want this library to be useful across many data science projects.
 If you have some standard utilities that you keep using in your projects, please add them here and make a PR.
+
+## Style
+We are using Googles [Python style guide](https://google.github.io/styleguide/pyguide.html#381-docstrings) convention for docstrings. 
+This allows us to make an up-to-date documentation website for the package. 
+
+In short, every function should have a short one-line description, optionally a longer description afterwards and a list of parameters. 
+For example
+```python
+def example_function(some_parameter: str, optional_param: int=None) -> bool:
+    """This function does something super smart.
+    
+    Here I will dive into more detail about the smart things.
+    I can use several lines for that. 
+    
+    Args:
+        some_parameter: Name of whatever
+        optional_param: Number of widgets or something. Only included when all the starts align. 
+        
+    Returns:
+         An indicator describing if something is true. 
+    """
+```
+
+There are many other style issues that we can run into, but if you follow the Google style guide, you will probably be fine. 
