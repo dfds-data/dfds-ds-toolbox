@@ -25,7 +25,6 @@ jobs:
         unzip awscliv2.zip
         sudo ./aws/install
       displayName: install awscli
-    # FIX ME!
     - script: |
         aws s3 sync docs/_build/html/ s3://dfds-dstoolbox-docs/
       displayName: Sync with s3
