@@ -12,6 +12,14 @@ Welcome to ds_toolbox's documentation!
 
    ds_toolbox
 
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Galleries:
+
+   auto_examples/index
+
+
 Indices and tables
 ==================
 
