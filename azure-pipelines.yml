@@ -18,8 +18,26 @@ jobs:
         pre-commit run --all-files
       displayName: 'Pre-commit check on all files'
 
-  - job: pytest
+  - job: test_docs
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.8'
+      displayName: '3.8'
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+        pip install -e .
+      displayName: 'Install dependencies'
+    - bash: |
+        make html
+      workingDirectory: docs/
+      displayName: 'Check that we can build docs'
 
+
+  - job: pytest
     strategy:
       matrix:
         LinuxTestPython37:
