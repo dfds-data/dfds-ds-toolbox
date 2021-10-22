@@ -3,7 +3,7 @@ trigger:
   - main
 
 jobs:
-  - job: build and publish docs
+  - job: build_publish_docs
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -29,7 +29,7 @@ jobs:
         inlineScript: "aws s3 sync docs/_build/html/ s3://dfds-dstoolbox-docs/"
       displayName: Sync with s3
 
-  - job: build and publish package
+  - job: build_publish_package
     pool:
       vmImage: 'ubuntu-latest'
     steps:
