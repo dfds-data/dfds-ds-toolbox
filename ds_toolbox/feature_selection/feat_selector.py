@@ -22,7 +22,7 @@ def stepwise_selection(
 
     Based on p-value from statsmodels.api.OLS
 
-    Arg:
+    Args:
         X: DataFrame with candidate features
         y: list-like with the target
         initial_list: list of features to start with (column names of X)
