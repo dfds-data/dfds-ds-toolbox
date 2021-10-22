@@ -253,6 +253,32 @@ And visualize the profiles with tools like [```snakeviz```](https://jiffyclub.gi
 snakeviz main_script_profile.stats
 ``` 
 
+## Logging
+The logging module allows you to easily log in console or/and in a debug file with coloured message levels and timestamps:
+
+Usage:
+```python
+>>> from ds_toolbox.logging.logging import init_logger
+>>> logger = init_logger()
+>>> logger.info("This message will not be logged.")
+>>> logger.critical("Something BAD happened.")
+```
+               
+[2021-10-13 14:57:32,394] <span style="color:red">CRITICAL</span> test_log - Something BAD happened.  
+
+The default value of `stream_level` is set to `"WARNING"`. If you want to log the messages on a different level than `"WARNING"` use:
+```python
+>>> logger = init_logger(stream_level="INFO")
+>>> logger.debug("This message will not be logged.")
+>>> logger.info("Starting some work.")
+```
+If you want to save additionally the log the messages into a file use:
+```python
+>>> logger = init_logger(stream_level="INFO", debug_file="path/log_files.log")
+>>> logger.debug("Logging something to a file.")
+>>> logger.info("Logging something to both terminal and file.")
+```
+
 ## Plotting
 ### Univariate plot
 For a list of features separate in bins and analysis the target distribution in both Train and Test
@@ -351,3 +377,27 @@ f=rocCurvePlot(dataTrain=dataTrain,dataTest=dataTest)
 # Contribute
 We want this library to be useful across many data science projects.
 If you have some standard utilities that you keep using in your projects, please add them here and make a PR.
+
+## Style
+We are using Googles [Python style guide](https://google.github.io/styleguide/pyguide.html#381-docstrings) convention for docstrings. 
+This allows us to make an up-to-date documentation website for the package. 
+
+In short, every function should have a short one-line description, optionally a longer description afterwards and a list of parameters. 
+For example
+```python
+def example_function(some_parameter: str, optional_param: int=None) -> bool:
+    """This function does something super smart.
+    
+    Here I will dive into more detail about the smart things.
+    I can use several lines for that. 
+    
+    Args:
+        some_parameter: Name of whatever
+        optional_param: Number of widgets or something. Only included when all the starts align. 
+        
+    Returns:
+         An indicator describing if something is true. 
+    """
+```
+
+There are many other style issues that we can run into, but if you follow the Google style guide, you will probably be fine. 
