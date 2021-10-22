@@ -13,10 +13,19 @@ LOG_FORMATS = defaultdict(
 
 
 def init_logger(name: str = None, stream_level: str = "WARNING", debug_file=None) -> logging.Logger:
-    """
-    Initialize a logger. Set up logging that print to stdout with
+    """Initialize a logger.
+
+    Set up logging that print to stdout with
     ``stream_level`` (default value is WARNING). If ``debug_file`` is
     given set up logging to file with DEBUG level.
+
+    Args:
+        name:
+        stream_level:
+        debug_file:
+
+    Returns:
+        The `Logger` object.
 
     Usage:
     >>> logger = init_logger()
