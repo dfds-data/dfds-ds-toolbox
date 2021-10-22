@@ -145,3 +145,8 @@ cython_debug/
 
 # /venv
 /venv
+
+docs/_build
+docs/auto_examples
+
+docs/ds_toolbox*rst

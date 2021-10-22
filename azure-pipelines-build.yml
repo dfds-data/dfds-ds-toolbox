@@ -3,7 +3,34 @@ trigger:
   - main
 
 jobs:
-  - job:
+  - job: build_publish_docs
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.8'
+      displayName: 'Use Python 3.8'
+
+    - script: |
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
+        pip install -e .
+    - script: |
+        sphinx-apidoc -o . ../ds_toolbox/ ../*tests*
+        make html
+      workingDirectory: docs/
+      displayName: Build docs
+    - task: AWSShellScript@1
+      inputs:
+        awsCredentials: "AWS ds_toolbox"
+        failOnStandardError: true
+        regionName: eu-central-1
+        scriptType: "inline"
+        inlineScript: "aws s3 sync docs/_build/html/ s3://dfds-dstoolbox-docs/"
+      displayName: Sync with s3
+
+  - job: build_publish_package
     pool:
       vmImage: 'ubuntu-latest'
     steps:

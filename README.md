@@ -1,6 +1,8 @@
 # Introduction 
 This repo is intended to contain a packaged toolbox of some neat, frequently-used data science code snippets and functions. The intention is that the classes should be compatible with the [sklearn](https://scikit-learn.org/stable/) library.
 
+Have a look at https://dfds-dstoolbox-docs.s3.eu-central-1.amazonaws.com/index.html for user guide.
+
 Already implemented:
 * Feature selector for regression problems
 * Model selector for regression and classification problems
@@ -376,7 +378,19 @@ f=rocCurvePlot(dataTrain=dataTrain,dataTest=dataTest)
 We want this library to be useful across many data science projects.
 If you have some standard utilities that you keep using in your projects, please add them here and make a PR.
 
-## Style
+## Documentation
+### Website
+
+The full documentation of this package is available at https://dfds-dstoolbox-docs.s3.eu-central-1.amazonaws.com/index.html
+To build the documentation locally run: 
+```shell
+cd docs/
+sphinx-apidoc -o . ../ds_toolbox/ ../*tests*
+make html
+```
+Now, you can open the documentation site in `docs/_build/index.html`.
+
+### Style
 We are using Googles [Python style guide](https://google.github.io/styleguide/pyguide.html#381-docstrings) convention for docstrings. 
 This allows us to make an up-to-date documentation website for the package. 
 
