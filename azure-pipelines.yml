@@ -32,6 +32,7 @@ jobs:
         pip install -e .
       displayName: 'Install dependencies'
     - bash: |
+        sphinx-apidoc -o . ../ds_toolbox/ ../*tests*
         make html
       workingDirectory: docs/
       displayName: 'Check that we can build docs'

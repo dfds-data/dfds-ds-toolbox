@@ -17,6 +17,7 @@ jobs:
         pip install -r requirements.txt
         pip install -e .
     - script: |
+        sphinx-apidoc -o . ../ds_toolbox/ ../*tests*
         make html
       workingDirectory: docs/
       displayName: Build docs
