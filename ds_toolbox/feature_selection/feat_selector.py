@@ -1,4 +1,5 @@
 import warnings
+from typing import Any, List
 
 import numpy as np
 import pandas as pd
@@ -9,22 +10,37 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import ShuffleSplit
 
 
-def stepwise_selection(X, y, initial_list=[], threshold_in=0.01, threshold_out=0.05, verbose=False):
+def stepwise_selection(
+    X: pd.DataFrame,
+    y: np.array,
+    initial_list: List[str] = None,
+    threshold_in: float = 0.01,
+    threshold_out: float = 0.05,
+    verbose: bool = False,
+):
     """Perform a forward-backward feature selection
-    based on p-value from statsmodels.api.OLS
-    Arguments:
-        X - pandas.DataFrame with candidate features
-        y - list-like with the target
-        initial_list - list of features to start with (column names of X)
-        threshold_in - include a feature if its p-value < threshold_in
-        threshold_out - exclude a feature if its p-value > threshold_out
-        verbose - whether to print the sequence of inclusions and exclusions
-    Returns: list of selected features
+
+    Based on p-value from statsmodels.api.OLS
+
+    Arg:
+        X: DataFrame with candidate features
+        y: list-like with the target
+        initial_list: list of features to start with (column names of X)
+        threshold_in: include a feature if its p-value < threshold_in
+        threshold_out: exclude a feature if its p-value > threshold_out
+        verbose: whether to print the sequence of inclusions and exclusions
+
+    Returns:
+        list of selected features
+
     Always set threshold_in < threshold_out to avoid infinite looping.
     See https://en.wikipedia.org/wiki/Stepwise_regression for the details
     """
     step_df = pd.DataFrame(columns=["action", "Feature", "p_val"])
-    included = list(initial_list)
+    if initial_list is None:
+        included = []
+    else:
+        included = list(initial_list)
     while True:
         changed = False
         # forward step
@@ -68,11 +84,20 @@ def stepwise_selection(X, y, initial_list=[], threshold_in=0.01, threshold_out=0
     return included
 
 
-def rf_prim_columns(X, y, n_trees=10, top_cols=10):
+def rf_prim_columns(X: pd.DataFrame, y, n_trees: int = 10, top_cols: int = 10):
     """
     Returns dictionary counting the number of times each column appears among the `top_cols` most significant columns
     in each of the ten Random Forests applied to the data set
     Also returns a list of the MAE values for further validation of the ability to predict the data set
+
+    Args:
+        X:
+        y:
+        n_trees:
+        top_cols:
+
+    Returns:
+        missing
     """
     col_names = list(X.columns)
     rand_list = np.random.randint(
@@ -121,25 +146,27 @@ def rf_prim_columns(X, y, n_trees=10, top_cols=10):
 
 
 class RegFeatureSelector:
-
     """Selects useful features.
+
     Several strategies are possible (filter and wrapper methods).
     Works for regression problems only.
-    Parameters
-    ----------
-    strategy : str, defaut = "l1"
-        The strategy to select features.
-        Available strategies = ["variance", "l1", "rf_feature_importance", 'rf_top_features', "stepwise"]
-    threshold : float, defaut = 0.3
-        The percentage of variable to discard according the strategy.
-        Must be between 0. and 1.
+
+    Attributes:
+        strategy:
+            default = "l1"
+            The strategy to select features.
+            Available strategies = ["variance", "l1", "rf_feature_importance", 'rf_top_features', "stepwise"]
+        threshold:
+            defaut = 0.3
+            The percentage of variable to discard according the strategy.
+            Must be between 0. and 1.
     """
 
-    def __init__(self, strategy="l1", threshold=0.3):
+    def __init__(self, strategy: str = "l1", threshold: float = 0.3):
         self.strategy = strategy
         self.threshold = threshold
         self.__fitOK = False
-        self.__to_discard = []
+        self.__to_discard: List[Any] = []
         self._available_strategies = [
             "variance",
             "l1",
@@ -165,18 +192,18 @@ class RegFeatureSelector:
             else:
                 setattr(self, k, v)
 
-    def fit(self, df_train, y_train):
-
+    def fit(self, df_train: pd.DataFrame, y_train: pd.Series):
         """Fits Reg_feature_selector.
-        Parameters
-        ----------
-        df_train : pandas dataframe of shape = (n_train, n_features)
-            The train dataset with numerical features and no NA
-        y_train : pandas series of shape = (n_train, ).
-            The target for regression task.
-        Returns
-        -------
-        sobject
+
+        Args:
+            df_train:
+                The train dataset with numerical features and no NA.
+                With shape = (n_train, n_features).
+            y_train:
+                The target for regression task.
+                With shape = (n_train, ).
+
+        Returns:
             self
         """
 
@@ -230,16 +257,16 @@ class RegFeatureSelector:
 
         return self
 
-    def transform(self, df):
-
+    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
         """Transforms the dataset
-        Parameters
-        ----------
-        df : pandas dataframe of shape = (n, n_features)
-            The dataset with numerical features and no NA
-        Returns
-        -------
-        pandas dataframe of shape = (n_train, n_features*(1-threshold))
+
+        Args:
+            df:
+                pandas dataframe of shape = (n, n_features).
+                The dataset with numerical features and no NA
+
+        Returns:
+            pandas dataframe of shape = (n_train, n_features*(1-threshold))
             The train dataset with relevant features
         """
 
@@ -253,18 +280,19 @@ class RegFeatureSelector:
         else:
             raise ValueError("call fit or fit_transform function before")
 
-    def fit_transform(self, df_train, y_train):
-
+    def fit_transform(self, df_train: pd.DataFrame, y_train: pd.DataFrame) -> pd.DataFrame:
         """Fits Reg_feature_selector and transforms the dataset
-        Parameters
-        ----------
-        df_train : pandas dataframe of shape = (n_train, n_features)
-            The train dataset with numerical features and no NA
-        y_train : pandas series of shape = (n_train, ).
-            The target for regression task.
-        Returns
-        -------
-        pandas dataframe of shape = (n_train, n_features*(1-threshold))
+
+        Args:
+            df_train:
+                The train dataset with numerical features and no NA.
+                With shape = (n_train, n_features).
+            y_train:
+                The target for regression task.
+                With shape = (n_train, ).
+
+        Returns:
+            pandas dataframe of shape = (n_train, n_features*(1-threshold))
             The train dataset with relevant features
         """
 
