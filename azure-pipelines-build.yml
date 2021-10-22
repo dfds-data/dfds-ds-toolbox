@@ -20,17 +20,14 @@ jobs:
         make html
       workingDirectory: docs/
       displayName: Build docs
-    - script: |
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install
-      displayName: install awscli
-    - script: |
-        aws s3 sync docs/_build/html/ s3://dfds-dstoolbox-docs/
+    - task: AWSShellScript@1
+      inputs:
+        awsCredentials: "AWS ds_toolbox"
+        failOnStandardError: true
+        regionName: eu-central-1
+        scriptType: "inline"
+        inlineScript: "aws s3 sync docs/_build/html/ s3://dfds-dstoolbox-docs/"
       displayName: Sync with s3
-      env:
-        AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-        AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
 
   - job: build and publish package
     pool:
