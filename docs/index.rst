@@ -10,6 +10,7 @@ Welcome to ds_toolbox's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   usage
    ds_toolbox
 
 
