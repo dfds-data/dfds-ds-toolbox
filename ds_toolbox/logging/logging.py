@@ -27,20 +27,24 @@ def init_logger(name: str = None, stream_level: str = "WARNING", debug_file=None
     Returns:
         The `Logger` object.
 
-    Usage:
-    >>> logger = init_logger()
-    >>> logger.info("This message will not be logged.")
-    >>> logger.critical("Something BAD happened.")
+    Examples:
+        Initializing the logger:
 
-    If you want to log the messages on a different level than DEBUG (default) use:
-    >>> logger = init_logger(stream_level="INFO")
-    >>> logger.debug("This message will not be logged.")
-    >>> logger.info("Starting some work.")
+        >>> logger = init_logger()
+        >>> logger.info("This message will not be logged.")
+        >>> logger.critical("Something BAD happened.")
 
-    If you want to save additionally the log the messages into a file use:
-    >>> logger = init_logger(stream_level="INFO", debug_file="path/log_files.log")
-    >>> logger.debug("Logging something to a file.")
-    >>> logger.info("Logging something to both terminal and file.")
+        If you want to log the messages on a different level than DEBUG (default) use:
+
+        >>> logger = init_logger(stream_level="INFO")
+        >>> logger.debug("This message will not be logged.")
+        >>> logger.info("Starting some work.")
+
+        If you want to save additionally the log the messages into a file use:
+
+        >>> logger = init_logger(stream_level="INFO", debug_file="path/log_files.log")
+        >>> logger.debug("Logging something to a file.")
+        >>> logger.info("Logging something to both terminal and file.")
     """
 
     # Set up logger
