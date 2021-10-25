@@ -20,9 +20,9 @@ def init_logger(name: str = None, stream_level: str = "WARNING", debug_file=None
     given set up logging to file with DEBUG level.
 
     Args:
-        name:
-        stream_level:
-        debug_file:
+        name: name of the logger
+        stream_level: threshold level for the logging
+        debug_file: filename for the logging debug file
 
     Returns:
         The `Logger` object.
