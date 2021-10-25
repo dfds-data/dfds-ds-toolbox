@@ -4,12 +4,15 @@ from pathlib import Path
 
 
 def profileit(profiles_path: Path, profile_name: str):
-    """Used as decorator. Generate stats file from the execution time profile of a function
-    using cProfile. The stats files are saved as <profiles_path>/<profile_name>.stats
+    """Generate stats file from the execution time profile of a function.
+
+    Used as decorator.
+    Generate profiling stats using cProfile. The stats files are saved as <profiles_path>/<profile_name>.stats
     See https://docs.python.org/3/library/profile.html#module-cProfile
 
-    :param profiles_path: Path, folder path where the stats file will be saved
-    :param profile_name: str, name of the stats file
+    Args:
+        profiles_path: folder path where the stats file will be saved
+        profile_name: name of the stats file
     """
 
     def inner(func):

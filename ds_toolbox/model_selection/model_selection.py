@@ -3,15 +3,16 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
 
 class ClfSwitcher(BaseEstimator, ClassifierMixin):
+    """A Custom BaseEstimator that can switch between classifiers.
+
+    Attributes:
+        estimator: The classifier
+    """
+
     def __init__(
         self,
-        estimator=RandomForestClassifier(),
+        estimator: BaseEstimator = RandomForestClassifier(),
     ):
-        """
-        A Custom BaseEstimator that can switch between classifiers.
-        :param estimator: sklearn object - The classifier
-        """
-
         self.estimator = estimator
 
     def fit(self, X, y=None):
@@ -29,15 +30,16 @@ class ClfSwitcher(BaseEstimator, ClassifierMixin):
 
 
 class RegSwitcher(BaseEstimator, RegressorMixin):
+    """A Custom BaseEstimator that can switch between classifiers.
+
+    Attributes:
+        estimator: The regressor
+    """
+
     def __init__(
         self,
-        estimator=RandomForestRegressor(),
+        estimator: BaseEstimator = RandomForestRegressor(),
     ):
-        """
-        A Custom BaseEstimator that can switch between regressors.
-        :param estimator: sklearn object - The regressor
-        """
-
         self.estimator = estimator
 
     def fit(self, X, y=None):
