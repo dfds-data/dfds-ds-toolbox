@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
 import numpy as np
 import pandas as pd
-import seaborn as sns
 from matplotlib.figure import Figure
 from sklearn.metrics import roc_auc_score, roc_curve
 
@@ -17,18 +16,22 @@ def plot_prediction_histogram(y_true: Sequence[int], y_pred: Sequence[float]) ->
         y_true: 1D array of binary target values, 0 or 1.
         y_pred: 1D array of predicted target values, probability of class 1.
     """
+    bins = np.linspace(0, 1, 11)
     df = pd.DataFrame()
     df["Actual class"] = y_true
     df["Probability of class 1"] = y_pred
-    fig = sns.histplot(
-        df,
-        x="Probability of class 1",
-        hue="Actual class",
-        multiple="dodge",
-        kde=True,
-        binrange=(0, 1),
+    df_actual_1 = df[df["Actual class"] == 1]
+    df_actual_0 = df[df["Actual class"] == 0]
+    plt.hist(
+        x=df_actual_0["Probability of class 1"], bins=bins, label="Actual class 0", histtype="step"
     )
-    return fig
+    plt.hist(
+        x=df_actual_1["Probability of class 1"], bins=bins, label="Actual class 1", histtype="step"
+    )
+    plt.xlabel("Probability of class 1")
+    plt.ylabel("Counts")
+    plt.legend()
+    return plt.gcf()
 
 
 # -------------------------------------------------

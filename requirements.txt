@@ -3,5 +3,4 @@ scikit-learn
 pandas
 numpy
 matplotlib
-seaborn
 rich==10.12.0
