@@ -163,7 +163,7 @@ We can then add the decorator to whatever function we want to profile::
     from ds_toolbox.profiling.profiling import profileit
     from pathlib import Path
 
-    @profileit(profiles_path=Path("profiles/"), profile_name="main_script_profile")
+    @profileit(path=Path("profiles/"), name="main_script_profile")
     def main():
     ...
 

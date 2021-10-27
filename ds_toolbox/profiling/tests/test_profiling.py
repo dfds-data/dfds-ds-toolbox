@@ -6,7 +6,7 @@ from ds_toolbox.profiling.profiling import profileit
 
 
 def test_profiling_successful(tmp_path):
-    @profileit(profiles_path=tmp_path, profile_name="test")
+    @profileit(path=tmp_path, name="test")
     def dummy_function():
         time.sleep(0.1)
 
@@ -16,7 +16,7 @@ def test_profiling_successful(tmp_path):
 def test_profiling_invalid_path():
     with pytest.raises(TypeError):
 
-        @profileit(profiles_path="invalid", profile_name="test")
+        @profileit(path="invalid", name="test")
         def dummy_function():
             time.sleep(0.1)
 
@@ -26,7 +26,7 @@ def test_profiling_invalid_path():
 def test_profiling_invalid_profile_name(tmp_path):
     with pytest.raises(TypeError):
 
-        @profileit(profiles_path=tmp_path, profile_name=2)
+        @profileit(path=tmp_path, name=2)
         def dummy_function():
             time.sleep(0.1)
 
