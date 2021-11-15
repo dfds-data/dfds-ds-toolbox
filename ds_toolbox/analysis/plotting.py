@@ -9,7 +9,7 @@ from matplotlib.figure import Figure
 from sklearn.metrics import roc_auc_score, roc_curve
 
 
-def plot_prediction_histogram(y_true: Sequence[int], y_pred: Sequence[float]) -> Figure:
+def plot_classification_proba_histogram(y_true: Sequence[int], y_pred: Sequence[float]) -> Figure:
     """Plot histogram of predictions for binary classifiers.
 
     Args:
@@ -34,10 +34,101 @@ def plot_prediction_histogram(y_true: Sequence[int], y_pred: Sequence[float]) ->
     return plt.gcf()
 
 
-# -------------------------------------------------
+def plot_single_univariate_dependency(
+    input_data: pd.DataFrame, feature: str, target_col: str, trend_correlation: float = None
+) -> Figure:
+    """Draws univariate dependence plots for a feature
+
+    Args:
+        input_data: grouped data contained bins of feature and target mean.
+        feature: feature column name.
+        target_col: target column name.
+        trend_correlation: correlation between train and test trends of feature wrt target
+
+    Returns:
+        Figure trend plots for feature
+    """
+    trend_changes = _get_trend_changes(
+        grouped_data=input_data, feature=feature, target_col=target_col
+    )
+    f = plt.figure(figsize=(12, 5))
+    ax1 = plt.subplot(1, 2, 1)
+    ax1.plot(input_data[target_col + "_mean"], marker="o")
+    ax1.set_xticks(np.arange(len(input_data)))
+    ax1.set_xticklabels((input_data[feature]).astype("str"))
+    plt.xticks(rotation=45)
+    ax1.set_xlabel("Bins of " + feature)
+    ax1.set_ylabel("Average of " + target_col)
+    comment = "Trend changed " + str(trend_changes) + " times"
+    if trend_correlation == 0:
+        comment = comment + "\n" + "Correlation with train trend: NA"
+    elif trend_correlation is not None:
+        comment = (
+            comment
+            + "\n"
+            + "Correlation with train trend: "
+            + str(int(trend_correlation * 100))
+            + "%"
+        )
+
+    props = dict(boxstyle="round", facecolor="wheat", alpha=0.3)
+    ax1.text(
+        0.05,
+        0.95,
+        comment,
+        fontsize=12,
+        verticalalignment="top",
+        bbox=props,
+        transform=ax1.transAxes,
+    )
+    plt.title("Average of " + target_col + " wrt " + feature)
+
+    ax2 = plt.subplot(1, 2, 2)
+    ax2.bar(np.arange(len(input_data)), input_data["Samples_in_bin"], alpha=0.5)
+    ax2.set_xticks(np.arange(len(input_data)))
+    ax2.set_xticklabels((input_data[feature]).astype("str"))
+    plt.xticks(rotation=45)
+    ax2.set_xlabel("Bins of " + feature)
+    ax2.set_ylabel("Bin-wise sample size")
+    plt.title("Samples in bins of " + feature)
+    plt.tight_layout()
+    plt.show()
+    return f
 
 
-def get_grouped_data(
+def plot_univariate_dependencies(
+    data: pd.DataFrame,
+    target_col: str,
+    features_list: List[str] = None,
+    bins: int = 10,
+    data_test: pd.DataFrame = None,
+):
+    """Creates univariate dependence plots for features in the dataset
+
+    Args:
+        data: dataframe containing features and target columns
+        target_col: target column name
+        features_list: by default creates plots for all features. If list passed, creates plots of only those features.
+        bins: number of bins to be created from continuous feature
+        data_test: test data which has to be compared with input data for correlation
+
+    Returns:
+         Draws univariate plots for all columns in data
+    """
+    if features_list is None:
+        features_list = list(data.columns)
+        features_list.remove(target_col)
+
+    for cols in features_list:
+        if cols != target_col and data[cols].dtype == "O":
+            print(cols + " is categorical. Categorical features not supported yet.")
+        elif cols != target_col and data[cols].dtype != "O":
+            _univariate_plotter(
+                feature=cols, data=data, target_col=target_col, bins=bins, data_test=data_test
+            )
+
+
+def _get_equally_grouped_data(
     input_data: pd.DataFrame,
     feature: str,
     target_col: str,
@@ -46,6 +137,8 @@ def get_grouped_data(
 ):
     """Bins continuous features into equal sample size buckets and returns the target mean in each bucket.
     Separates out nulls into another bucket.
+
+    Helper function for other plotting functions.
 
     Args:
         input_data: dataframe containing features and target column.
@@ -122,72 +215,12 @@ def get_grouped_data(
         return grouped
 
 
-def draw_plots(
-    input_data: pd.DataFrame, feature: str, target_col: str, trend_correlation: float = None
-) -> Figure:
-    """Draws univariate dependence plots for a feature
-
-    Args:
-        input_data: grouped data contained bins of feature and target mean.
-        feature: feature column name.
-        target_col: target column name.
-        trend_correlation: correlation between train and test trends of feature wrt target
-
-    Returns:
-        Figure trend plots for feature
-    """
-    trend_changes = get_trend_changes(
-        grouped_data=input_data, feature=feature, target_col=target_col
-    )
-    f = plt.figure(figsize=(12, 5))
-    ax1 = plt.subplot(1, 2, 1)
-    ax1.plot(input_data[target_col + "_mean"], marker="o")
-    ax1.set_xticks(np.arange(len(input_data)))
-    ax1.set_xticklabels((input_data[feature]).astype("str"))
-    plt.xticks(rotation=45)
-    ax1.set_xlabel("Bins of " + feature)
-    ax1.set_ylabel("Average of " + target_col)
-    comment = "Trend changed " + str(trend_changes) + " times"
-    if trend_correlation == 0:
-        comment = comment + "\n" + "Correlation with train trend: NA"
-    elif trend_correlation is not None:
-        comment = (
-            comment
-            + "\n"
-            + "Correlation with train trend: "
-            + str(int(trend_correlation * 100))
-            + "%"
-        )
-
-    props = dict(boxstyle="round", facecolor="wheat", alpha=0.3)
-    ax1.text(
-        0.05,
-        0.95,
-        comment,
-        fontsize=12,
-        verticalalignment="top",
-        bbox=props,
-        transform=ax1.transAxes,
-    )
-    plt.title("Average of " + target_col + " wrt " + feature)
-
-    ax2 = plt.subplot(1, 2, 2)
-    ax2.bar(np.arange(len(input_data)), input_data["Samples_in_bin"], alpha=0.5)
-    ax2.set_xticks(np.arange(len(input_data)))
-    ax2.set_xticklabels((input_data[feature]).astype("str"))
-    plt.xticks(rotation=45)
-    ax2.set_xlabel("Bins of " + feature)
-    ax2.set_ylabel("Bin-wise sample size")
-    plt.title("Samples in bins of " + feature)
-    plt.tight_layout()
-    plt.show()
-    return f
-
-
-def get_trend_changes(
+def _get_trend_changes(
     grouped_data: pd.DataFrame, feature: str, target_col: str, threshold: float = 0.03
 ) -> int:
     """Calculates number of times the trend of feature wrt target changed direction.
+
+    Helper function for other plotting functions.
 
     Args:
         grouped_data: grouped dataset
@@ -212,10 +245,12 @@ def get_trend_changes(
     return tot_trend_changes
 
 
-def get_trend_correlation(
+def _get_trend_correlation(
     grouped: pd.DataFrame, grouped_test: pd.DataFrame, feature: str, target_col: str
 ) -> float:
     """Calculates correlation between train and test trend of feature wrt target.
+
+    Helper function for other plotting functions.
 
     Args:
         grouped: train grouped data
@@ -253,7 +288,7 @@ def get_trend_correlation(
     return trend_correlation
 
 
-def univariate_plotter(
+def _univariate_plotter(
     feature: str,
     data: pd.DataFrame,
     target_col: str,
@@ -261,6 +296,8 @@ def univariate_plotter(
     data_test: pd.DataFrame = None,
 ):
     """Calls the draw plot function and editing around the plots
+
+    Helper function for `get_univariate_plots`.
 
     Args:
         feature: feature column name
@@ -276,69 +313,41 @@ def univariate_plotter(
     if data[feature].dtype == "O":
         print("Categorical feature not supported")
     else:
-        cuts, grouped = get_grouped_data(
+        cuts, grouped = _get_equally_grouped_data(
             input_data=data, feature=feature, target_col=target_col, bins=bins
         )
         has_test = type(data_test) == pd.core.frame.DataFrame
         if has_test:
-            grouped_test = get_grouped_data(
+            grouped_test = _get_equally_grouped_data(
                 input_data=data_test.reset_index(drop=True),  # type: ignore[union-attr]
                 feature=feature,
                 target_col=target_col,
                 bins=bins,
                 cuts=cuts,
             )
-            trend_corr = get_trend_correlation(grouped, grouped_test, feature, target_col)
+            trend_corr = _get_trend_correlation(grouped, grouped_test, feature, target_col)
             print(" {:^100} ".format("Train data plots"))
 
-            draw_plots(input_data=grouped, feature=feature, target_col=target_col)
+            plot_single_univariate_dependency(
+                input_data=grouped, feature=feature, target_col=target_col
+            )
             print(" {:^100} ".format("Test data plots"))
 
-            draw_plots(
+            plot_single_univariate_dependency(
                 input_data=grouped_test,
                 feature=feature,
                 target_col=target_col,
                 trend_correlation=trend_corr,
             )
         else:
-            draw_plots(input_data=grouped, feature=feature, target_col=target_col)
+            plot_single_univariate_dependency(
+                input_data=grouped, feature=feature, target_col=target_col
+            )
         print("\n")
         if has_test:
             return (grouped, grouped_test)
         else:
             return grouped
-
-
-def get_univariate_plots(
-    data: pd.DataFrame,
-    target_col: str,
-    features_list: List[str] = None,
-    bins: int = 10,
-    data_test: pd.DataFrame = None,
-):
-    """Creates univariate dependence plots for features in the dataset
-
-    Args:
-        data: dataframe containing features and target columns
-        target_col: target column name
-        features_list: by default creates plots for all features. If list passed, creates plots of only those features.
-        bins: number of bins to be created from continuous feature
-        data_test: test data which has to be compared with input data for correlation
-
-    Returns:
-         Draws univariate plots for all columns in data
-    """
-    if features_list is None:
-        features_list = list(data.columns)
-        features_list.remove(target_col)
-
-    for cols in features_list:
-        if cols != target_col and data[cols].dtype == "O":
-            print(cols + " is categorical. Categorical features not supported yet.")
-        elif cols != target_col and data[cols].dtype != "O":
-            univariate_plotter(
-                feature=cols, data=data, target_col=target_col, bins=bins, data_test=data_test
-            )
 
 
 def get_trend_stats(
@@ -372,22 +381,22 @@ def get_trend_stats(
         if data[feature].dtype == "O" or feature == target_col:
             ignored.append(feature)
         else:
-            cuts, grouped = get_grouped_data(
+            cuts, grouped = _get_equally_grouped_data(
                 input_data=data, feature=feature, target_col=target_col, bins=bins
             )
-            trend_changes = get_trend_changes(
+            trend_changes = _get_trend_changes(
                 grouped_data=grouped, feature=feature, target_col=target_col
             )
             if has_test:
-                grouped_test = get_grouped_data(
+                grouped_test = _get_equally_grouped_data(
                     input_data=data_test.reset_index(drop=True),  # type: ignore[union-attr]
                     feature=feature,
                     target_col=target_col,
                     bins=bins,
                     cuts=cuts,
                 )
-                trend_corr = get_trend_correlation(grouped, grouped_test, feature, target_col)
-                trend_changes_test = get_trend_changes(
+                trend_corr = _get_trend_correlation(grouped, grouped_test, feature, target_col)
+                trend_changes_test = _get_trend_changes(
                     grouped_data=grouped_test, feature=feature, target_col=target_col
                 )
                 stats = [feature, trend_changes, trend_changes_test, trend_corr]
@@ -411,10 +420,7 @@ def get_trend_stats(
     return stats_all_df
 
 
-# -----------------------------------------------------
-
-
-def plot_regression_results(
+def plot_regression_predicted_vs_actual(
     y_true: np.array, y_pred: np.array, title: str = "", extra_text: str = "", band_pct: float = 0.1
 ) -> Figure:
     """Scatter plot of the predicted vs true targets
@@ -462,10 +468,7 @@ def plot_regression_results(
     return fig
 
 
-# -------------------------------------------------------------------------
-
-
-def rocCurvePlot(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) -> Figure:
+def plot_roc_curve(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) -> Figure:
     """plot roc curve for train and test
 
     Args:
@@ -473,7 +476,7 @@ def rocCurvePlot(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) ->
         dataTest: dataframe containing features and target columns
         label: extra test to add
     Returns:
-        figure
+        Figure
     """
     fprTrain, tprTrain, _ = roc_curve(dataTrain.target, dataTrain.predProba)
     roc_aucTrain = roc_auc_score(dataTrain.target, dataTrain.predProba)
@@ -498,10 +501,7 @@ def rocCurvePlot(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) ->
     return f
 
 
-# ---------------------------------------------------------------
-
-
-def liftCurvePlot(
+def plot_lift_curve(
     dataTrain: pd.DataFrame,
     dataTest: pd.DataFrame,
     noBins: int = 50,
@@ -518,7 +518,7 @@ def liftCurvePlot(
     Returns:
         figure
     """
-    trainLift = _getCurve_Lift(dataTrain, noBins)
+    trainLift = _get_lift_curve(dataTrain, noBins)
     if eventBaseRate is None:
         eventRateBase = dataTrain.target.sum() / len(dataTrain)
 
@@ -527,7 +527,7 @@ def liftCurvePlot(
     ax1.plot(trainLift["Quantile"], trainLift["EventRate"], "r", label="Train")
 
     if len(dataTest) > 0:
-        testLift = _getCurve_Lift(dataTest, noBins)
+        testLift = _get_lift_curve(dataTest, noBins)
         ax1.plot(testLift["Quantile"], testLift["EventRate"], "b", label="Test")
 
     y1Min, y1Max = ax1.get_ylim()
@@ -551,7 +551,7 @@ def liftCurvePlot(
     return f
 
 
-def _getCurve_Lift(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
+def _get_lift_curve(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
     datasetSorted = dataSet.sort_values("predProba", ascending=False)
     datasetSize = len(datasetSorted)
     datasetStep = round(datasetSize / noBins)
@@ -567,7 +567,7 @@ def _getCurve_Lift(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
     return frameOut
 
 
-def _getCurve_Gains(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
+def _get_gains_curve(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
     datasetSorted = dataSet.sort_values("predProba", ascending=False)
     datasetSize = len(datasetSorted)
     total_events = datasetSorted.target.sum()
@@ -590,7 +590,7 @@ def _getCurve_Gains(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
     return frameOut
 
 
-def GainChartPlot(
+def plot_gain_chart(
     dataTrain: pd.DataFrame, dataTest: pd.DataFrame = None, noBins: int = 50
 ) -> Figure:
     """calculate the percentage of ones within the best n featues and compare this with the average number of ones
@@ -603,13 +603,13 @@ def GainChartPlot(
     Returns:
 
     """
-    trainLift = _getCurve_Gains(dataTrain, noBins)
+    trainLift = _get_gains_curve(dataTrain, noBins)
 
     f, ax1 = plt.subplots(1)
 
     ax1.plot(trainLift["Quantile"], trainLift["PctEvents"], "red", label="Train")
     if dataTest is not None and len(dataTest) > 0:
-        testLift = _getCurve_Gains(dataTest, noBins)
+        testLift = _get_gains_curve(dataTest, noBins)
         ax1.plot(testLift["Quantile"], testLift["PctEvents"], "blue", label="Test")
     ax1.plot(trainLift["Quantile"], trainLift["Quantile"], "--", color="black", label="Random")
 

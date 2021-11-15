@@ -9,7 +9,7 @@ from sklearn.datasets import load_diabetes
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_predict, train_test_split
 
-from ds_toolbox.analysis.plotting import plot_regression_results
+from ds_toolbox.analysis.plotting import plot_regression_predicted_vs_actual
 
 # Create a dataset to fit and predict
 
@@ -29,4 +29,4 @@ y_pred = cross_val_predict(est, X_train[numeric_cols], y_train, n_jobs=-1, verbo
 mae = (np.abs(y_train - y_pred)).mean(axis=0)
 mae_text = (r"$MAE={:.2f}$").format(mae)
 
-plot_regression_results(y_train, y_pred, title="RF Model", extra_text=mae_text)
+plot_regression_predicted_vs_actual(y_train, y_pred, title="RF Model", extra_text=mae_text)

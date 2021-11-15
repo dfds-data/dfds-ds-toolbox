@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 
 def test_prediction_histogram():
-    from ds_toolbox.analysis.plotting import plot_prediction_histogram
+    from ds_toolbox.analysis.plotting import plot_classification_proba_histogram
 
     # Make a synthetic dataset
     data = datasets.make_classification()
@@ -15,6 +15,6 @@ def test_prediction_histogram():
     clf.fit(X_train, y_train)
     preds = clf.predict_proba(X_test)[:, 1]  # Only take predictions for class 1
     # Plot this example dataset
-    plot_prediction_histogram(y_true=y_test, y_pred=preds)
+    plot_classification_proba_histogram(y_true=y_test, y_pred=preds)
     # We are just testing that the plotting does not fail
     assert True

@@ -8,7 +8,7 @@ For a list of features separate in bins and analysis the target distribution in 
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
-from ds_toolbox.analysis.plotting import get_univariate_plots
+from ds_toolbox.analysis.plotting import plot_univariate_dependencies
 
 # Create a dataset to classify
 X, y = load_iris(return_X_y=True, as_frame=True)
@@ -21,6 +21,6 @@ data_test = X_test.copy()
 data_test["target"] = y_test
 
 # plots univariate plots of first 10 columns in data_train
-get_univariate_plots(
+plot_univariate_dependencies(
     data=data_train, target_col="target", features_list=features, data_test=data_test
 )
