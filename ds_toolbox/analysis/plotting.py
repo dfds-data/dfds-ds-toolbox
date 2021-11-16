@@ -171,8 +171,6 @@ def _get_equally_grouped_data(
                 reduced_cuts = reduced_cuts + 1
             prev_cut = next_cut
 
-        # if reduced_cuts>0:
-        #     print('Reduced the number of bins due to less variation in feature')
         cut_series = pd.cut(input_data[feature], cuts)
     else:
         cut_series = pd.cut(input_data[feature], cuts)
