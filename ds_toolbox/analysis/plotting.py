@@ -43,68 +43,6 @@ def plot_classification_proba_histogram(y_true: Sequence[int], y_pred: Sequence[
     return plt.gcf()
 
 
-def plot_single_univariate_dependency(
-    input_data: pd.DataFrame, feature: str, target_col: str, trend_correlation: float = None
-) -> Figure:
-    """Draws univariate dependence plots for a feature
-
-    Args:
-        input_data: grouped data contained bins of feature and target mean.
-        feature: feature column name.
-        target_col: target column name.
-        trend_correlation: correlation between train and test trends of feature wrt target
-
-    Returns:
-        Figure trend plots for feature
-    """
-    trend_changes = _get_trend_changes(
-        grouped_data=input_data, feature=feature, target_col=target_col
-    )
-    f = plt.figure(figsize=(12, 5))
-    ax1 = plt.subplot(1, 2, 1)
-    ax1.plot(input_data[target_col + "_mean"], marker="o")
-    ax1.set_xticks(np.arange(len(input_data)))
-    ax1.set_xticklabels((input_data[feature]).astype("str"))
-    plt.xticks(rotation=45)
-    ax1.set_xlabel("Bins of " + feature)
-    ax1.set_ylabel("Average of " + target_col)
-    comment = "Trend changed " + str(trend_changes) + " times"
-    if trend_correlation == 0:
-        comment = comment + "\n" + "Correlation with train trend: NA"
-    elif trend_correlation is not None:
-        comment = (
-            comment
-            + "\n"
-            + "Correlation with train trend: "
-            + str(int(trend_correlation * 100))
-            + "%"
-        )
-
-    props = dict(boxstyle="round", facecolor="wheat", alpha=0.3)
-    ax1.text(
-        0.05,
-        0.95,
-        comment,
-        fontsize=12,
-        verticalalignment="top",
-        bbox=props,
-        transform=ax1.transAxes,
-    )
-    plt.title("Average of " + target_col + " wrt " + feature)
-
-    ax2 = plt.subplot(1, 2, 2)
-    ax2.bar(np.arange(len(input_data)), input_data["Samples_in_bin"], alpha=0.5)
-    ax2.set_xticks(np.arange(len(input_data)))
-    ax2.set_xticklabels((input_data[feature]).astype("str"))
-    plt.xticks(rotation=45)
-    ax2.set_xlabel("Bins of " + feature)
-    ax2.set_ylabel("Bin-wise sample size")
-    plt.title("Samples in bins of " + feature)
-    plt.tight_layout()
-    plt.show()
-    return f
-
-
 def plot_univariate_dependencies(
     data: pd.DataFrame,
     target_col: str,
