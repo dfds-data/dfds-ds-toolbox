@@ -1,3 +1,4 @@
+from matplotlib.figure import Figure
 from sklearn import datasets
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -15,6 +16,6 @@ def test_prediction_histogram():
     clf.fit(X_train, y_train)
     preds = clf.predict_proba(X_test)[:, 1]  # Only take predictions for class 1
     # Plot this example dataset
-    plot_classification_proba_histogram(y_true=y_test, y_pred=preds)
-    # We are just testing that the plotting does not fail
-    assert True
+    fig = plot_classification_proba_histogram(y_true=y_test, y_pred=preds)
+    # Check that the figure is a matplotlib Figure
+    assert isinstance(fig, Figure)
