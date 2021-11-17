@@ -11,7 +11,6 @@ from sklearn.metrics import roc_auc_score, roc_curve
 from ds_toolbox.analysis.plotting_utils import (
     _get_equally_grouped_data,
     _get_gains_curve,
-    _get_lift_curve,
     _get_trend_changes,
     _get_trend_correlation,
     _univariate_plotter,
@@ -226,54 +225,33 @@ def plot_roc_curve(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) 
     return f
 
 
-def plot_lift_curve(
-    dataTrain: pd.DataFrame,
-    dataTest: pd.DataFrame,
-    noBins: int = 50,
-    label: str = "",
-    eventBaseRate: float = None,
-) -> Figure:
-    """Plot cumulative precision and lift evolution in 2 axis
+def plot_lift_curve(y_true: np.array, y_pred: np.array, n_bins: int = 10) -> Figure:
+    """Plot lift curve, i.e. how much better than baserate is the model at different thresholds.
+
+    Lift of 1 corresponds to predicting the baserate for the whole sample.
 
     Args:
-        dataTrain: dataframe containing features and target columns
-        dataTest: dataframe containing features and target columns
-        noBins: number of bins to be created from continuous feature
-        eventBaseRate: ??
+        y_true: array with observed values
+        y_pred: array with predicted values between 0 and 1
+        n_bins: number of bins to use
+
     Returns:
-        figure
+        matplotlib Figure
     """
-    trainLift = _get_lift_curve(dataTrain, noBins)
-    if eventBaseRate is None:
-        eventRateBase = dataTrain.target.sum() / len(dataTrain)
-
-    f, ax1 = plt.subplots(1)
-
-    ax1.plot(trainLift["Quantile"], trainLift["EventRate"], "r", label="Train")
-
-    if len(dataTest) > 0:
-        testLift = _get_lift_curve(dataTest, noBins)
-        ax1.plot(testLift["Quantile"], testLift["EventRate"], "b", label="Test")
-
-    y1Min, y1Max = ax1.get_ylim()
-    ax2 = ax1.twinx()
-    ax2.set_ylim(y1Min / eventRateBase, y1Max / eventRateBase)
-
-    ax1.legend()
-    ax1.set_title("Cumulative Precision and Lift: " + label)
-    ax1.set_ylabel("Cumulative Precision")
-    ax1.set_xlabel("Quantile")
-    ax2.set_ylabel("Cumulative Lift")
-
-    ax1.text(
-        0.05,
-        0.05,
-        "Base Event Rate: {0:.2f}".format(eventRateBase),
-        verticalalignment="bottom",
-        horizontalalignment="left",
-        transform=ax1.transAxes,
-    )
-    return f
+    # Sort true and pred by predicted probability, in descending order
+    y_true, y_pred = zip(*sorted(zip(y_true, y_pred), key=lambda x: x[1], reverse=True))
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    # Compute running mean
+    y_true_running_mean = y_true.cumsum() / np.arange(1, len(y_true) + 1)
+    # Lift is the running rate of positive events over the baserate.
+    lift = y_true_running_mean / y_true.mean()
+    bins = np.linspace(0, 1, n_bins)
+    binned_lift = np.quantile(lift, bins)[::-1]  # reverse to get descending order
+    # Plot
+    plt.plot(bins, binned_lift)
+    plt.xlabel("Fraction of sample")
+    plt.ylabel("Cumulative lift")
+    return plt.gcf()
 
 
 def plot_gain_chart(

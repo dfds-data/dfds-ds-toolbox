@@ -229,22 +229,6 @@ def _univariate_plotter(
             return grouped
 
 
-def _get_lift_curve(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
-    datasetSorted = dataSet.sort_values("predProba", ascending=False)
-    datasetSize = len(datasetSorted)
-    datasetStep = round(datasetSize / noBins)
-
-    frameOut = pd.DataFrame([], columns=["Quantile", "EventRate"])
-    for i in range(datasetStep, datasetSize, datasetStep):
-        frameOut = frameOut.append(
-            pd.DataFrame(
-                [[i / datasetSize, (datasetSorted.target.iloc[:i]).sum() / i]],
-                columns=["Quantile", "EventRate"],
-            )
-        )
-    return frameOut
-
-
 def _get_gains_curve(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
     datasetSorted = dataSet.sort_values("predProba", ascending=False)
     datasetSize = len(datasetSorted)
