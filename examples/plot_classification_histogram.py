@@ -9,7 +9,7 @@ from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-from ds_toolbox.analysis.plotting import plot_prediction_histogram
+from ds_toolbox.analysis.plotting import plot_classification_proba_histogram
 
 # Create a dataset to classify
 X, y = make_classification(
@@ -29,4 +29,4 @@ predictions = model.predict_proba(X_test)
 proba_class_1 = predictions[:, 1]
 
 # Compare predictions to ground truth
-plot_prediction_histogram(y_true=y_test, y_pred=proba_class_1)
+plot_classification_proba_histogram(y_true=y_test, y_pred=proba_class_1)

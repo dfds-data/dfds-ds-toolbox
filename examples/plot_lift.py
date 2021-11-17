@@ -8,7 +8,7 @@ Given a trained model, it showcase the accumulative lift/gain curve of both trai
 import pandas as pd
 from sklearn import datasets, model_selection, svm
 
-from ds_toolbox.analysis.plotting import liftCurvePlot
+from ds_toolbox.analysis.plotting import plot_lift_curve
 
 X, y = datasets.make_classification(random_state=0)
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, random_state=0)
@@ -25,4 +25,4 @@ dataTest["predProba"] = list(clf.predict_proba(X_test)[:, 1])
 dataTest["target"] = list(y_test)
 print("dataTest", dataTest.shape)
 
-f = liftCurvePlot(dataTrain=dataTrain, dataTest=dataTest, noBins=10)
+f = plot_lift_curve(dataTrain=dataTrain, dataTest=dataTest, noBins=10)

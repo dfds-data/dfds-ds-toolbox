@@ -7,7 +7,7 @@ Given a trained model, it showcase the Area under the curve of both train and te
 import pandas as pd
 from sklearn import datasets, model_selection, svm
 
-from ds_toolbox.analysis.plotting import rocCurvePlot
+from ds_toolbox.analysis.plotting import plot_roc_curve
 
 X, y = datasets.make_classification(random_state=0)
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, random_state=0)
@@ -25,4 +25,4 @@ dataTest["target"] = list(y_test)
 print("dataTest", dataTest.shape)
 
 
-fig = rocCurvePlot(dataTrain=dataTrain, dataTest=dataTest, label="Example")
+fig = plot_roc_curve(dataTrain=dataTrain, dataTest=dataTest, label="Example")
