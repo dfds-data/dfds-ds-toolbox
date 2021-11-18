@@ -231,7 +231,7 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
 
     Args:
         y_true: array with observed values, either 0 or 1.
-        y_pred: array with predicted values, float between 0 and 1.
+        y_pred: array with predicted probabilities, float between 0 and 1.
         n_bins: number of bins to use
 
     Returns:
@@ -262,7 +262,7 @@ def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
 
     Args:
         y_true: array with observed values, either 0 or 1.
-        y_pred: array with predicted values, float between 0 and 1.
+        y_pred: array with predicted probabilities, float between 0 and 1.
         n_bins: number of bins to use
 
     Returns:
