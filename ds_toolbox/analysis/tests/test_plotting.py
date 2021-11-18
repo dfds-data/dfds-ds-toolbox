@@ -47,3 +47,24 @@ def test_lift_curve(classification_dataset):
 
     # Check that the figure is a matplotlib Figure
     assert isinstance(fig, Figure), "plot_lift_curve did not return a matplotlib Figure"
+
+
+def test_gain_chart(classification_dataset):
+    from ds_toolbox.analysis.plotting import plot_gain_chart
+
+    X, y = classification_dataset
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+    # Train a simple model
+    clf = LogisticRegression()
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict_proba(X_test)[:, 1]  # Select probabilities for class 1
+
+    fig = plot_gain_chart(
+        y_true=y_test,
+        y_pred=y_pred,
+        n_bins=20,
+    )
+
+    # Check that the figure is a matplotlib Figure
+    assert isinstance(fig, Figure), "plot_gain_chart did not return a matplotlib Figure"
