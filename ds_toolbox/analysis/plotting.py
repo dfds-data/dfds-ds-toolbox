@@ -225,26 +225,29 @@ def plot_roc_curve(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) 
     return f
 
 
-def plot_lift_curve(y_true: np.array, y_pred: np.array, n_bins: int = 10) -> Figure:
+def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10) -> Figure:
     """Plot lift curve, i.e. how much better than baserate is the model at different thresholds.
 
     Lift of 1 corresponds to predicting the baserate for the whole sample.
 
     Args:
-        y_true: array with observed values
-        y_pred: array with predicted values between 0 and 1
+        y_true: array with observed values, either 0 or 1.
+        y_pred: array with predicted values, float between 0 and 1.
         n_bins: number of bins to use
 
     Returns:
         matplotlib Figure
     """
+    # Ensure numpy arrays. Save to new variable to avoid redefining a type. Mypy doesn't like that.
+    y_true_array = np.array(y_true)
+    y_pred_array = np.array(y_pred)
     # Sort true and pred by predicted probability, in descending order
-    y_true, y_pred = zip(*sorted(zip(y_true, y_pred), key=lambda x: x[1], reverse=True))
-    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    sorted_idx = np.argsort(y_pred_array)[::-1]
+    y_true_array, y_pred_array = y_true_array[sorted_idx], y_pred_array[sorted_idx]
     # Compute running mean
-    y_true_running_mean = y_true.cumsum() / np.arange(1, len(y_true) + 1)
+    y_true_running_mean = y_true_array.cumsum() / np.arange(1, len(y_true_array) + 1)
     # Lift is the running rate of positive events over the baserate.
-    lift = y_true_running_mean / y_true.mean()
+    lift = y_true_running_mean / y_true_array.mean()
     bins = np.linspace(0, 1, n_bins)
     binned_lift = np.quantile(lift, bins)[::-1]  # reverse to get descending order
     # Plot
