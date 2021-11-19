@@ -278,6 +278,8 @@ def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     y_true_running_sum = y_true_array.cumsum()
     # Gain is the running sum of positive events over total number of positive events
     gain = y_true_running_sum / y_true_array.sum()
+    # Make sure initial gain is 0. When we have no samples, we have no gain.
+    gain = np.concatenate(([0], gain))
     bins = np.linspace(0, 1, n_bins)
     binned_gaín = np.quantile(gain, bins)
     # Plot
