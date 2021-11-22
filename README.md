@@ -88,6 +88,9 @@ For more information see
 - 0.2.0 => Fix bugs to install
 - 0.3.0 => Plotting updates (Univariate, Pred_Real, AUC, Lift) Remember to add
   descriptions of any new versions, please include working examples
+- 0.7.0 => Following new coding guidelines. Functions and variables have been
+  renamed.
+-
 
 # Contribute
 
