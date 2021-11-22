@@ -176,8 +176,8 @@ def plot_regression_predicted_vs_actual(
     ax.set_ylim([y_true.min(), y_true.max() * 1.1])
     ax.set_xlabel("Observed")
     ax.set_ylabel("Predicted")
-    ax.xaxis.set_major_formatter(tkr.FuncFormatter(lambda y, p: format(int(y), ",")))
-    ax.yaxis.set_major_formatter(tkr.FuncFormatter(lambda y, p: format(int(y), ",")))
+    ax.xaxis.set_major_formatter(tkr.FuncFormatter(lambda y, _: format(int(y), ",")))
+    ax.yaxis.set_major_formatter(tkr.FuncFormatter(lambda y, _: format(int(y), ",")))
     extra = plt.Rectangle((0, 0), 0, 0, fc="w", fill=False, edgecolor="none", linewidth=0)
     ax.legend([extra], [extra_text], loc="upper left")
     ax.set_title(title)
@@ -191,28 +191,34 @@ def plot_regression_predicted_vs_actual(
     return fig
 
 
-def plot_roc_curve(dataTrain: pd.DataFrame, dataTest: pd.DataFrame, label: str) -> Figure:
+def plot_roc_curve(data_train: pd.DataFrame, data_test: pd.DataFrame, label: str) -> Figure:
     """plot roc curve for train and test
 
     Args:
-        dataTrain: dataframe containing features and target columns
-        dataTest: dataframe containing features and target columns
+        data_train: dataframe containing features and target columns
+        data_test: dataframe containing features and target columns
         label: extra test to add
     Returns:
         Figure
     """
-    fprTrain, tprTrain, _ = roc_curve(dataTrain.target, dataTrain.predProba)
-    roc_aucTrain = roc_auc_score(dataTrain.target, dataTrain.predProba)
+    fpr_train, tpr_train, _ = roc_curve(data_train.target, data_train.predProba)
+    roc_auc_train = roc_auc_score(data_train.target, data_train.predProba)
 
     f, ax1 = plt.subplots(1)
     lw = 2
-    ax1.plot(fprTrain, tprTrain, "red", lw=lw, label="Train (AUC = {0:.2f})".format(roc_aucTrain))
+    ax1.plot(
+        fpr_train, tpr_train, "red", lw=lw, label="Train (AUC = {0:.2f})".format(roc_auc_train)
+    )
     ax1.plot([0, 1], [0, 1], color="black", lw=lw, linestyle="--")
-    if len(dataTest) > 0:
-        fprTest, tprTest, _ = roc_curve(dataTest.target, dataTest.predProba)
-        roc_aucTest = roc_auc_score(dataTest.target, dataTest.predProba)
+    if len(data_test) > 0:
+        fpr_test, tpr_test, _ = roc_curve(data_test.target, data_test.predProba)
+        roc_auc_test = roc_auc_score(data_test.target, data_test.predProba)
         ax1.plot(
-            fprTest, tprTest, color="blue", lw=lw, label="Test (AUC = {0:.2f})".format(roc_aucTest)
+            fpr_test,
+            tpr_test,
+            color="blue",
+            lw=lw,
+            label="Test (AUC = {0:.2f})".format(roc_auc_test),
         )
     ax1.set_xlim([0.0, 1.0])
     ax1.set_ylim([0.0, 1.05])

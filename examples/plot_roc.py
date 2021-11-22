@@ -14,15 +14,15 @@ X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, random
 clf = svm.SVC(random_state=0, probability=True)
 clf.fit(X_train, y_train)
 
-dataTrain = pd.DataFrame(X_train.copy())
-dataTrain["target"] = list(y_train)
-dataTrain["predProba"] = list(clf.predict_proba(X_train)[:, 1])
-print("dataTrain", dataTrain.shape)
+data_train = pd.DataFrame(X_train.copy())
+data_train["target"] = list(y_train)
+data_train["predProba"] = list(clf.predict_proba(X_train)[:, 1])
+print("data_train", data_train.shape)
 
-dataTest = pd.DataFrame(X_test.copy())
-dataTest["predProba"] = list(clf.predict_proba(X_test)[:, 1])
-dataTest["target"] = list(y_test)
-print("dataTest", dataTest.shape)
+data_test = pd.DataFrame(X_test.copy())
+data_test["predProba"] = list(clf.predict_proba(X_test)[:, 1])
+data_test["target"] = list(y_test)
+print("data_test", data_test.shape)
 
 
-fig = plot_roc_curve(dataTrain=dataTrain, dataTest=dataTest, label="Example")
+fig = plot_roc_curve(data_train=data_train, data_test=data_test, label="Example")

@@ -1,5 +1,7 @@
 import logging
 from collections import defaultdict
+from pathlib import Path
+from typing import Union
 
 from rich.logging import RichHandler
 
@@ -12,7 +14,9 @@ LOG_FORMATS = defaultdict(
 )
 
 
-def init_logger(name: str = None, stream_level: str = "WARNING", debug_file=None) -> logging.Logger:
+def init_logger(
+    name: str = None, stream_level: str = "WARNING", debug_file: Union[Path, str] = None
+) -> logging.Logger:
     """Initialize a logger.
 
     Set up logging that print to stdout with
