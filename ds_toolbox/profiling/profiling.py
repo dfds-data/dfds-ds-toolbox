@@ -1,9 +1,10 @@
 import cProfile
 from functools import wraps
 from pathlib import Path
+from typing import Callable
 
 
-def profileit(path: Path, name: str):
+def profileit(path: Path, name: str) -> Callable:
     """Generate stats file from the execution time profile of a function.
 
     Used as decorator.
@@ -15,9 +16,9 @@ def profileit(path: Path, name: str):
         name: name of the stats file
     """
 
-    def inner(func):
+    def _inner(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def _wrapper(*args, **kwargs):
             if not isinstance(path, Path):
                 raise TypeError(
                     f"path must be an instance of <class pathlib.Path>, got {type(path)}"
@@ -30,6 +31,6 @@ def profileit(path: Path, name: str):
             prof.dump_stats(path / f"{name}.stats")
             return retval
 
-        return wrapper
+        return _wrapper
 
-    return inner
+    return _inner

@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "ds_toolbox"
-copyright = "2021, Data Science Chapter, D&A"
+copyright = "2021, Data Science Chapter, D&A"  # noqa[A001]
 author = "Data Science Chapter, D&A"
 
 # The full version, including alpha/beta/rc tags

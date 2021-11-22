@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 import warnings
-from typing import Any, List
+from typing import Any, List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -17,7 +19,7 @@ def stepwise_selection(
     threshold_in: float = 0.01,
     threshold_out: float = 0.05,
     verbose: bool = False,
-):
+) -> List[str]:
     """Perform a forward-backward feature selection
 
     Based on p-value from statsmodels.api.OLS
@@ -84,7 +86,9 @@ def stepwise_selection(
     return included
 
 
-def rf_prim_columns(X: pd.DataFrame, y, n_trees: int = 10, top_cols: int = 10):
+def rf_prim_columns(
+    X: pd.DataFrame, y: pd.Series, n_trees: int = 10, top_cols: int = 10
+) -> Tuple[pd.DataFrame, List[float]]:
     """
     Returns dictionary counting the number of times each column appears among the `top_cols` most significant columns
     in each of the ten Random Forests applied to the data set
@@ -175,14 +179,14 @@ class RegFeatureSelector:
             "stepwise",
         ]
 
-    def get_params(self):
+    def _get_params(self):
         return {"strategy": self.strategy, "threshold": self.threshold}
 
-    def set_params(self, **params):
+    def _set_params(self, **params):
         self.__fitOK = False
 
         for k, v in params.items():
-            if k not in self.get_params():
+            if k not in self._get_params():
                 warnings.warn(
                     "Invalid parameter a for feature selector"
                     "Reg_feature_selector. Parameter IGNORED. Check "
@@ -192,7 +196,7 @@ class RegFeatureSelector:
             else:
                 setattr(self, k, v)
 
-    def fit(self, df_train: pd.DataFrame, y_train: pd.Series):
+    def fit(self, df_train: pd.DataFrame, y_train: pd.Series) -> RegFeatureSelector:
         """Fits Reg_feature_selector.
 
         Args:
