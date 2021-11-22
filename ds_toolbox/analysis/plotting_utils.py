@@ -229,29 +229,6 @@ def _univariate_plotter(
             return grouped
 
 
-def _get_gains_curve(dataSet: pd.DataFrame, noBins: int) -> pd.DataFrame:
-    datasetSorted = dataSet.sort_values("predProba", ascending=False)
-    datasetSize = len(datasetSorted)
-    total_events = datasetSorted.target.sum()
-    datasetStep = round(datasetSize / noBins)
-
-    frameOut = pd.DataFrame([], columns=["Quantile", "EventRate"])
-    for i in range(datasetStep, datasetSize, datasetStep):
-        frameOut = frameOut.append(
-            pd.DataFrame(
-                [
-                    [
-                        i / datasetSize,
-                        (datasetSorted.target.iloc[:i]).sum() / i,
-                        (datasetSorted.target.iloc[:i]).sum() / total_events,
-                    ]
-                ],
-                columns=["Quantile", "EventRate", "PctEvents"],
-            )
-        )
-    return frameOut
-
-
 def _draw_single_univariate_dependency(
     input_data: pd.DataFrame, feature: str, target_col: str, trend_correlation: float = None
 ) -> Figure:

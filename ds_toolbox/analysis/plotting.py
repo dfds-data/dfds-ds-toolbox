@@ -10,7 +10,6 @@ from sklearn.metrics import roc_auc_score, roc_curve
 
 from ds_toolbox.analysis.plotting_utils import (
     _get_equally_grouped_data,
-    _get_gains_curve,
     _get_trend_changes,
     _get_trend_correlation,
     _univariate_plotter,
@@ -232,7 +231,7 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
 
     Args:
         y_true: array with observed values, either 0 or 1.
-        y_pred: array with predicted values, float between 0 and 1.
+        y_pred: array with predicted probabilities, float between 0 and 1.
         n_bins: number of bins to use
 
     Returns:
@@ -257,34 +256,36 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     return plt.gcf()
 
 
-def plot_gain_chart(
-    dataTrain: pd.DataFrame, dataTest: pd.DataFrame = None, noBins: int = 50
-) -> Figure:
-    """calculate the percentage of ones within the best n featues and compare this with the average number of ones
+def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10) -> Figure:
+    """The cumulative gains chart shows the percentage of the overall number of cases in a given
+     category "gained" by targeting a percentage of the total number of cases.
 
     Args:
-        dataTrain:
-        dataTest:
-        noBins:
+        y_true: array with observed values, either 0 or 1.
+        y_pred: array with predicted probabilities, float between 0 and 1.
+        n_bins: number of bins to use
 
     Returns:
-
+        matplotlib Figure
     """
-    trainLift = _get_gains_curve(dataTrain, noBins)
-
-    f, ax1 = plt.subplots(1)
-
-    ax1.plot(trainLift["Quantile"], trainLift["PctEvents"], "red", label="Train")
-    if dataTest is not None and len(dataTest) > 0:
-        testLift = _get_gains_curve(dataTest, noBins)
-        ax1.plot(testLift["Quantile"], testLift["PctEvents"], "blue", label="Test")
-    ax1.plot(trainLift["Quantile"], trainLift["Quantile"], "--", color="black", label="Random")
-
-    y1Min, y1Max = ax1.get_ylim()
-
-    ax1.legend()
-    ax1.set_title("Gains Chart: ")
-    ax1.set_ylabel("% of Events")
-    ax1.set_xlabel("% of Customers")
-
-    return f
+    # Ensure numpy arrays. Save to new variable to avoid redefining a type. Mypy doesn't like that.
+    y_true_array = np.array(y_true)
+    y_pred_array = np.array(y_pred)
+    # Sort true and pred by predicted probability, in descending order
+    sorted_idx = np.argsort(y_pred_array)[::-1]
+    y_true_array, y_pred_array = y_true_array[sorted_idx], y_pred_array[sorted_idx]
+    # Compute cumulative positive events
+    y_true_running_sum = y_true_array.cumsum()
+    # Gain is the running sum of positive events over total number of positive events
+    gain = y_true_running_sum / y_true_array.sum()
+    # Make sure initial gain is 0. When we have no samples, we have no gain.
+    gain = np.concatenate(([0], gain))
+    bins = np.linspace(0, 1, n_bins)
+    binned_gaín = np.quantile(gain, bins)
+    # Plot
+    plt.plot(bins, binned_gaín, marker="o")
+    plt.plot([0, 1], [0, 1], color="black", linestyle="--", label="Baseline")
+    plt.xlabel("Fraction of sample")
+    plt.ylabel("Gain")
+    plt.suptitle("Gain chart")
+    return plt.gcf()
