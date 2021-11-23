@@ -32,4 +32,4 @@ ignore-names =
     setUp,tearDown,setUpClass,tearDownClass,asyncSetUp,asyncTearDown,setUpTestData,failureException,longMessage,maxDiff,
     X,X_train,X_test
 # exclude tests from flake8 checking
-exclude = */tests/*
+exclude = tests/*
