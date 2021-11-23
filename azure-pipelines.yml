@@ -72,5 +72,5 @@ jobs:
         pip install -r requirements.txt
       displayName: 'Installing dependencies..'
     - script: |
-        python -m pytest ds_toolbox
+        python -m pytest
       displayName: 'pytest'
