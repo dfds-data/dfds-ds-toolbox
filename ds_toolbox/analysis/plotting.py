@@ -256,9 +256,11 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     bins = np.linspace(0, 1, n_bins)
     binned_lift = np.quantile(lift, bins)[::-1]  # reverse to get descending order
     # Plot
-    plt.plot(bins, binned_lift)
+    plt.plot(bins, binned_lift, marker="o")
     plt.xlabel("Fraction of sample")
     plt.ylabel("Cumulative lift")
+    # Baseline
+    plt.plot([0, 1], [1, 1], color="black", linestyle="--", label="Baseline")
     return plt.gcf()
 
 
