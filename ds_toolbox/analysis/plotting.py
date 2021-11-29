@@ -287,9 +287,9 @@ def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     # Make sure initial gain is 0. When we have no samples, we have no gain.
     gain = np.concatenate(([0], gain))
     bins = np.linspace(0, 1, n_bins)
-    binned_gaín = np.quantile(gain, bins)
+    binned_gain = np.quantile(gain, bins)
     # Plot
-    plt.plot(bins, binned_gaín, marker="o")
+    plt.plot(bins, binned_gain, marker="o")
     plt.plot([0, 1], [0, 1], color="black", linestyle="--", label="Baseline")
     plt.xlabel("Fraction of sample")
     plt.ylabel("Gain")
