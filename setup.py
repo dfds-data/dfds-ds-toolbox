@@ -14,7 +14,6 @@ setup(
     install_requires=["scikit-learn", "pandas", "numpy", "statsmodels", "rich", "matplotlib"],
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Intended Audience :: Data Scientists",
         "Programming Language :: Python 3.7",
         "Programming Language :: Python 3.8",
         "Programming Language :: Python 3.9",
