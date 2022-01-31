@@ -13,7 +13,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Data Science Chapter at DFDS",
     author_email="urcha@dfds.com",
-    install_requires=["scikit-learn", "pandas", "numpy", "matplotlib"],
+    install_requires=["scikit-learn", "pandas", "numpy", "matplotlib", "statsmodels", "rich"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3 :: Only",
