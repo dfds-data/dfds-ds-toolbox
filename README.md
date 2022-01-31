@@ -73,10 +73,11 @@ python -m pip install --upgrade pip
 pip install keyring artifacts-keyring
 ```
 
-If you want to install the package `ds_toolbox` version 3.0, you should run
+If you want to install the package `dfds_ds_toolbox` version 0.8.0, you should
+run
 
 ```shell
-pip install --extra-index-url=https://dfds.pkgs.visualstudio.com/_packaging/smartdata/pypi/simple/ dfds_ds_toolbox==0.3.0
+pip install dfds_ds_toolbox==0.8.0
 ```
 
 For more information see
