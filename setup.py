@@ -10,8 +10,8 @@ setup(
     version="0.8.0",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="Ida Friisberg, Uriel Chareca, Dennis Hansen, Pablo Canada",
-    author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com, pacaa@dfds.com",
+    author="Data Science Chapter at DFDS",
+    author_email="urcha@dfds.com",
     install_requires=["scikit-learn", "pandas", "numpy", "matplotlib"],
     classifiers=[
         "Development Status :: 3 - Alpha",
