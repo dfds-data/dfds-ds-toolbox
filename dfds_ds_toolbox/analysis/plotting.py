@@ -8,7 +8,7 @@ import pandas as pd
 from matplotlib.figure import Figure
 from sklearn.metrics import roc_auc_score, roc_curve
 
-from ds_toolbox.analysis.plotting_utils import (
+from dfds_ds_toolbox.analysis.plotting_utils import (
     _get_equally_grouped_data,
     _get_trend_changes,
     _get_trend_correlation,

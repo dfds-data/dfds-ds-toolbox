@@ -8,7 +8,7 @@ For a list of features separate in bins and analysis the target distribution in 
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
-from ds_toolbox.analysis.plotting import plot_univariate_dependencies
+from dfds_ds_toolbox.analysis.plotting import plot_univariate_dependencies
 
 # Create a dataset to classify
 X, y = load_iris(return_X_y=True, as_frame=True)

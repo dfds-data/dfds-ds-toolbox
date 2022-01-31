@@ -9,7 +9,7 @@ from sklearn.datasets import load_diabetes
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_predict, train_test_split
 
-from ds_toolbox.analysis.plotting import plot_regression_predicted_vs_actual
+from dfds_ds_toolbox.analysis.plotting import plot_regression_predicted_vs_actual
 
 # Create a dataset to fit and predict
 

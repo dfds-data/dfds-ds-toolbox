@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath("../"))
 
 # -- Project information -----------------------------------------------------
 
-project = "ds_toolbox"
+project = "dfds_ds_toolbox"
 copyright = "2021, Data Science Chapter, D&A"  # noqa[A001]
 author = "Data Science Chapter, D&A"
 

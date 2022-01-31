@@ -2,7 +2,7 @@ import time
 
 import pytest
 
-from ds_toolbox.profiling.profiling import profileit
+from dfds_ds_toolbox.profiling.profiling import profileit
 
 
 def test_profiling_successful(tmp_path):

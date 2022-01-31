@@ -4,18 +4,22 @@ with open("README.md") as f:
     long_description = f.read()
 
 setup(
-    name="ds_toolbox",
+    name="dfds_ds_toolbox",
     packages=find_packages(exclude=["*tests*"]),
-    keywords=["ds_toolbox", "data science"],
-    version="0.7.2",
+    keywords=["dfds_ds_toolbox", "data science"],
+    version="0.8.0",
+    description="A collection of tools for data science used at DFDS.",
     long_description=long_description,
-    author="Ida Friisberg, Uriel Chareca, Dennis Hansen, Pablo Canada",
-    author_email="idfri@dfds.com, urcha@dfds.com, dhans@dfds.com, pacaa@dfds.com",
-    install_requires=["scikit-learn", "pandas", "numpy", "statsmodels", "rich", "matplotlib"],
+    long_description_content_type="text/markdown",
+    author="Data Science Chapter at DFDS",
+    author_email="urcha@dfds.com",
+    install_requires=["scikit-learn", "pandas", "numpy", "matplotlib"],
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "Programming Language :: Python 3.7",
-        "Programming Language :: Python 3.8",
-        "Programming Language :: Python 3.9",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "License :: OSI Approved :: MIT License",
     ],
 )
