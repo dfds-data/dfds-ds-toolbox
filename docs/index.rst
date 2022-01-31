@@ -11,7 +11,7 @@ Welcome to ds_toolbox's documentation!
    :caption: Contents:
 
    usage
-   ds_toolbox
+   dfds_ds_toolbox
 
 
 .. toctree::
