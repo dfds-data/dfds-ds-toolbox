@@ -8,6 +8,7 @@ setup(
     packages=find_packages(exclude=["*tests*"]),
     keywords=["dfds_ds_toolbox", "data science"],
     version="0.8.0",
+    description="A collection of tools for data science used at DFDS.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Data Science Chapter at DFDS",
