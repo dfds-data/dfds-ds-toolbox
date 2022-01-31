@@ -12,7 +12,7 @@ def classification_dataset():
 
 
 def test_prediction_histogram(classification_dataset):
-    from ds_toolbox.analysis.plotting import plot_classification_proba_histogram
+    from dfds_ds_toolbox.analysis.plotting import plot_classification_proba_histogram
 
     X, y = classification_dataset
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
@@ -29,7 +29,7 @@ def test_prediction_histogram(classification_dataset):
 
 
 def test_lift_curve(classification_dataset):
-    from ds_toolbox.analysis.plotting import plot_lift_curve
+    from dfds_ds_toolbox.analysis.plotting import plot_lift_curve
 
     X, y = classification_dataset
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
@@ -50,7 +50,7 @@ def test_lift_curve(classification_dataset):
 
 
 def test_gain_chart(classification_dataset):
-    from ds_toolbox.analysis.plotting import plot_gain_chart
+    from dfds_ds_toolbox.analysis.plotting import plot_gain_chart
 
     X, y = classification_dataset
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)

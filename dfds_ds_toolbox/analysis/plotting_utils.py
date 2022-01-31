@@ -1,5 +1,5 @@
 """
-Helper functions for ds_toolbox.analysis.plotting.
+Helper functions for dfds_ds_toolbox.analysis.plotting.
 """
 from typing import List, Union
 

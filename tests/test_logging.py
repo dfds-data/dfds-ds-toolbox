@@ -3,7 +3,7 @@ import logging
 import pytest
 from rich.logging import RichHandler
 
-from ds_toolbox.logging.logging import init_logger
+from dfds_ds_toolbox.logging.logging import init_logger
 
 
 @pytest.fixture

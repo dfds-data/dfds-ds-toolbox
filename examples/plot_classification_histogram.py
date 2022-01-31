@@ -9,7 +9,7 @@ from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-from ds_toolbox.analysis.plotting import plot_classification_proba_histogram
+from dfds_ds_toolbox.analysis.plotting import plot_classification_proba_histogram
 
 # Create a dataset to classify
 X, y = make_classification(

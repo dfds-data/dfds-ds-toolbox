@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, SGDClassifier
 from sklearn.model_selection import GridSearchCV
 
-from ds_toolbox.model_selection.model_selection import ClfSwitcher, RegSwitcher
+from dfds_ds_toolbox.model_selection.model_selection import ClfSwitcher, RegSwitcher
 
 
 def get_data(model_type):
