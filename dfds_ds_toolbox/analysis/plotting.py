@@ -1,7 +1,6 @@
 from typing import List, Sequence
 
 import matplotlib.pyplot as plt
-import matplotlib.ticker as tkr
 import numpy as np
 import pandas as pd
 from matplotlib.figure import Figure
@@ -144,45 +143,25 @@ def get_trend_stats(
 
 
 def plot_regression_predicted_vs_actual(
-    y_true: np.array, y_pred: np.array, title: str = "", extra_text: str = "", band_pct: float = 0.1
+    y_true: np.array, y_pred: np.array, alpha: float = 0.2
 ) -> Figure:
-    """Scatter plot of the predicted vs true targets
+    """Scatter plot of the predicted vs true targets for regression problems.
 
     Args:
         y_true: array with observed values
         y_pred: array with predicted values
-        title: Title of plot
-        extra_text: Legend to add
-        band_pct: width of band (in %, between 0 and 1)
+        alpha: transparency of the dots on the scatter plot
 
     Returns:
         Figure
     """
     fig, ax = plt.subplots()
-    ax.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], "--r", linewidth=2)
-    ax.scatter(y_true, y_pred, alpha=0.2)
-
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
-    ax.spines["left"].set_position(("outward", 10))
-    ax.spines["bottom"].set_position(("outward", 10))
-    ax.set_xlim([y_true.min(), y_true.max() * 1.1])
-    ax.set_ylim([y_true.min(), y_true.max() * 1.1])
-    ax.set_xlabel("Observed")
+    min_val = min(min(y_true), min(y_pred))
+    max_val = max(max(y_true), max(y_pred))
+    ax.plot([min_val, max_val], [min_val, max_val])
+    ax.scatter(y_true, y_pred, alpha=alpha)
+    ax.set_xlabel("Actual")
     ax.set_ylabel("Predicted")
-    ax.xaxis.set_major_formatter(tkr.FuncFormatter(lambda y, _: format(int(y), ",")))
-    ax.yaxis.set_major_formatter(tkr.FuncFormatter(lambda y, _: format(int(y), ",")))
-    extra = plt.Rectangle((0, 0), 0, 0, fc="w", fill=False, edgecolor="none", linewidth=0)
-    ax.legend([extra], [extra_text], loc="upper left")
-    ax.set_title(title)
-    # create a confidence band of +/- 10% error
-    y_lower = [i - band_pct * i for i in sorted(y_true)]
-    y_upper = [i + band_pct * i for i in sorted(y_true)]
-    # plot our confidence band
-    ax.fill_between(sorted(y_true), y_lower, y_upper, alpha=0.2, color="tab:orange")
-    plt.tight_layout()
     return fig
 
 
