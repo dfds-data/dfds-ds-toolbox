@@ -27,6 +27,7 @@ est = RandomForestRegressor()
 y_pred = cross_val_predict(est, X_train[numeric_cols], y_train, n_jobs=-1, verbose=0)
 
 mae = (np.abs(y_train - y_pred)).mean(axis=0)
-mae_text = (r"$MAE={:.2f}$").format(mae)
+mae_text = f"Regression results: MAE={mae:.2f}"
 
-plot_regression_predicted_vs_actual(y_train, y_pred, title="RF Model", extra_text=mae_text)
+fig = plot_regression_predicted_vs_actual(y_train, y_pred)
+fig.suptitle(mae_text)
