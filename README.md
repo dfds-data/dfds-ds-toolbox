@@ -5,9 +5,7 @@ frequently-used data science code snippets and functions. The intention is that
 the classes should be compatible with the
 [sklearn](https://scikit-learn.org/stable/) library.
 
-Have a look at
-https://dfds-dstoolbox-docs.s3.eu-central-1.amazonaws.com/index.html for user
-guide.
+Have a look at https://dfds-ds-toolbox.readthedocs.io for user guide.
 
 Already implemented:
 
@@ -70,7 +68,6 @@ packages
 
 ```shell
 python -m pip install --upgrade pip
-pip install keyring artifacts-keyring
 ```
 
 If you want to install the package `dfds_ds_toolbox` version 0.8.0, you should
@@ -79,9 +76,6 @@ run
 ```shell
 pip install dfds_ds_toolbox==0.8.0
 ```
-
-For more information see
-[this guide in the wiki](https://dfds.visualstudio.com/Smart%20Data/_wiki/wikis/Smart-Data.wiki/2779/Installing-a-package-from-the-smartdata-artifact-feed)
 
 # Versions
 
@@ -104,8 +98,9 @@ here and make a PR.
 ### Website
 
 The full documentation of this package is available at
-https://dfds-dstoolbox-docs.s3.eu-central-1.amazonaws.com/index.html To build
-the documentation locally run:
+https://dfds-ds-toolbox.readthedocs.io
+
+To build the documentation locally run:
 
 ```shell
 cd docs/
