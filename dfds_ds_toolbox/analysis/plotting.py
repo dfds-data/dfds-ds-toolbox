@@ -199,7 +199,7 @@ def plot_roc_curve(data_train: pd.DataFrame, data_test: pd.DataFrame, label: str
     fpr_train, tpr_train, _ = roc_curve(data_train.target, data_train.predProba)
     roc_auc_train = roc_auc_score(data_train.target, data_train.predProba)
 
-    fig, ax = plt.subplots(1)
+    fig, ax = plt.subplots()
     lw = 2
     ax.plot(fpr_train, tpr_train, "red", lw=lw, label="Train (AUC = {0:.2f})".format(roc_auc_train))
     ax.plot([0, 1], [0, 1], color="black", lw=lw, linestyle="--")
