@@ -1,6 +1,5 @@
 from typing import List, Sequence
 
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tkr
 import numpy as np
@@ -23,22 +22,23 @@ def plot_classification_proba_histogram(y_true: Sequence[int], y_pred: Sequence[
         y_true: 1D array of binary target values, 0 or 1.
         y_pred: 1D array of predicted target values, probability of class 1.
     """
+    fig, ax = plt.subplots()
     bins = np.linspace(0, 1, 11)
     df = pd.DataFrame()
     df["Actual class"] = y_true
     df["Probability of class 1"] = y_pred
     df_actual_1 = df[df["Actual class"] == 1]
     df_actual_0 = df[df["Actual class"] == 0]
-    plt.hist(
+    ax.hist(
         x=df_actual_0["Probability of class 1"], bins=bins, label="Actual class 0", histtype="step"
     )
-    plt.hist(
+    ax.hist(
         x=df_actual_1["Probability of class 1"], bins=bins, label="Actual class 1", histtype="step"
     )
-    plt.xlabel("Probability of class 1")
-    plt.ylabel("Counts")
-    plt.legend()
-    return plt.gcf()
+    ax.set_xlabel("Probability of class 1")
+    ax.set_ylabel("Counts")
+    ax.legend()
+    return fig
 
 
 def plot_univariate_dependencies(
@@ -158,11 +158,7 @@ def plot_regression_predicted_vs_actual(
     Returns:
         Figure
     """
-
-    matplotlib.rcParams["font.size"] = 10
-    matplotlib.rcParams["figure.figsize"] = (10, 7)
-    matplotlib.rcParams["font.size"] = 12
-    fig, ax = plt.subplots(nrows=1, ncols=1)
+    fig, ax = plt.subplots()
     ax.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], "--r", linewidth=2)
     ax.scatter(y_true, y_pred, alpha=0.2)
 
@@ -187,7 +183,6 @@ def plot_regression_predicted_vs_actual(
     # plot our confidence band
     ax.fill_between(sorted(y_true), y_lower, y_upper, alpha=0.2, color="tab:orange")
     plt.tight_layout()
-    plt.show()
     return fig
 
 
@@ -204,30 +199,28 @@ def plot_roc_curve(data_train: pd.DataFrame, data_test: pd.DataFrame, label: str
     fpr_train, tpr_train, _ = roc_curve(data_train.target, data_train.predProba)
     roc_auc_train = roc_auc_score(data_train.target, data_train.predProba)
 
-    f, ax1 = plt.subplots(1)
+    fig, ax = plt.subplots(1)
     lw = 2
-    ax1.plot(
-        fpr_train, tpr_train, "red", lw=lw, label="Train (AUC = {0:.2f})".format(roc_auc_train)
-    )
-    ax1.plot([0, 1], [0, 1], color="black", lw=lw, linestyle="--")
+    ax.plot(fpr_train, tpr_train, "red", lw=lw, label="Train (AUC = {0:.2f})".format(roc_auc_train))
+    ax.plot([0, 1], [0, 1], color="black", lw=lw, linestyle="--")
     if len(data_test) > 0:
         fpr_test, tpr_test, _ = roc_curve(data_test.target, data_test.predProba)
         roc_auc_test = roc_auc_score(data_test.target, data_test.predProba)
-        ax1.plot(
+        ax.plot(
             fpr_test,
             tpr_test,
             color="blue",
             lw=lw,
             label="Test (AUC = {0:.2f})".format(roc_auc_test),
         )
-    ax1.set_xlim([0.0, 1.0])
-    ax1.set_ylim([0.0, 1.05])
-    ax1.set_xlabel("False Positive Rate")
-    ax1.set_ylabel("True Positive Rate")
-    ax1.set_title("Receiver operating characteristic: " + label)
-    ax1.legend(loc="lower right")
-    ax1.set_aspect("equal", "datalim")
-    return f
+    ax.set_xlim([0.0, 1.0])
+    ax.set_ylim([0.0, 1.05])
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title("Receiver operating characteristic: " + label)
+    ax.legend(loc="lower right")
+    ax.set_aspect("equal", "datalim")
+    return fig
 
 
 def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10) -> Figure:
@@ -243,6 +236,7 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     Returns:
         matplotlib Figure
     """
+    fig, ax = plt.subplots()
     # Ensure numpy arrays. Save to new variable to avoid redefining a type. Mypy doesn't like that.
     y_true_array = np.array(y_true)
     y_pred_array = np.array(y_pred)
@@ -256,12 +250,12 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     bins = np.linspace(0, 1, n_bins)
     binned_lift = np.quantile(lift, bins)[::-1]  # reverse to get descending order
     # Plot
-    plt.plot(bins, binned_lift, marker="o")
-    plt.xlabel("Fraction of sample")
-    plt.ylabel("Cumulative lift")
+    ax.plot(bins, binned_lift, marker="o")
+    ax.set_xlabel("Fraction of sample")
+    ax.set_ylabel("Cumulative lift")
     # Baseline
-    plt.plot([0, 1], [1, 1], color="black", linestyle="--", label="Baseline")
-    return plt.gcf()
+    ax.plot([0, 1], [1, 1], color="black", linestyle="--", label="Baseline")
+    return fig
 
 
 def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10) -> Figure:
@@ -276,6 +270,7 @@ def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     Returns:
         matplotlib Figure
     """
+    fig, ax = plt.subplots()
     # Ensure numpy arrays. Save to new variable to avoid redefining a type. Mypy doesn't like that.
     y_true_array = np.array(y_true)
     y_pred_array = np.array(y_pred)
@@ -291,9 +286,9 @@ def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     bins = np.linspace(0, 1, n_bins)
     binned_gain = np.quantile(gain, bins)
     # Plot
-    plt.plot(bins, binned_gain, marker="o")
-    plt.plot([0, 1], [0, 1], color="black", linestyle="--", label="Baseline")
-    plt.xlabel("Fraction of sample")
-    plt.ylabel("Gain")
-    plt.suptitle("Gain chart")
-    return plt.gcf()
+    ax.plot(bins, binned_gain, marker="o")
+    ax.plot([0, 1], [0, 1], color="black", linestyle="--", label="Baseline")
+    ax.set_xlabel("Fraction of sample")
+    ax.set_ylabel("Gain")
+    ax.set_title("Gain chart")
+    return fig
