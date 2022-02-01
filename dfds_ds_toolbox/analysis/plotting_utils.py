@@ -246,8 +246,7 @@ def _draw_single_univariate_dependency(
     trend_changes = _get_trend_changes(
         grouped_data=input_data, feature=feature, target_col=target_col
     )
-    f = plt.figure(figsize=(12, 5))
-    ax1 = plt.subplot(1, 2, 1)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
     ax1.plot(input_data[target_col + "_mean"], marker="o")
     ax1.set_xticks(np.arange(len(input_data)))
     ax1.set_xticklabels((input_data[feature]).astype("str"))
@@ -287,5 +286,4 @@ def _draw_single_univariate_dependency(
     ax2.set_ylabel("Bin-wise sample size")
     plt.title("Samples in bins of " + feature)
     plt.tight_layout()
-    plt.show()
-    return f
+    return fig
