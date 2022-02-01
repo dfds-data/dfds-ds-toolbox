@@ -2,7 +2,7 @@
 Plot ROC (Receiver operating characteristic)
 ============================================
 
-Given a trained model, it showcase the Area under the curve of both train and test data. Remember to include a predProba field
+Given a trained model, it showcase the Area under the curve of both train and test data.
 """
 import pandas as pd
 from sklearn import datasets, model_selection, svm
@@ -25,4 +25,6 @@ data_test["target"] = list(y_test)
 print("data_test", data_test.shape)
 
 
-fig = plot_roc_curve(data_train=data_train, data_test=data_test, label="Example")
+fig = plot_roc_curve(y_true=data_train["target"], y_pred=data_train["predProba"], label="Train")
+ax = fig.get_axes()[0]
+fig = plot_roc_curve(y_true=data_test["target"], y_pred=data_test["predProba"], label="Test", ax=ax)
