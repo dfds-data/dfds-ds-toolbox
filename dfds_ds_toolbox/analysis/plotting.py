@@ -143,7 +143,7 @@ def get_trend_stats(
 
 
 def plot_regression_predicted_vs_actual(
-    y_true: np.array, y_pred: np.array, alpha: float = 0.2
+    y_true: Sequence[float], y_pred: Sequence[float], alpha: float = 0.2
 ) -> Figure:
     """Scatter plot of the predicted vs true targets for regression problems.
 
