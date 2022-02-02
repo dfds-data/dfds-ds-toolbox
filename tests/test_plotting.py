@@ -120,3 +120,45 @@ def test_plot_regression_predicted_vs_actual_alpha_parameter(regression_true_and
     assert isinstance(
         fig, Figure
     ), "plot_regression_predicted_vs_actual did not return a matplotlib Figure"
+
+
+def test_plot_roc_curve_defaults(classification_dataset):
+    """Test that the default values for the plot_roc_curve function result in a plot"""
+    from dfds_ds_toolbox.analysis.plotting import plot_roc_curve
+
+    X, y = classification_dataset
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+    # Train a simple model
+    clf = LogisticRegression()
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict_proba(X_test)[:, 1]  # Select probabilities for class 1
+
+    fig = plot_roc_curve(y_true=y_test, y_pred=y_pred)
+
+    # Check that the figure is a matplotlib Figure
+    assert isinstance(fig, Figure), "plot_roc_curve did not return a matplotlib Figure"
+
+
+def test_plot_roc_curve_multi_ax(classification_dataset):
+    """Test that plot_roc_curve can plot both train and test on the same Axes object"""
+    from dfds_ds_toolbox.analysis.plotting import plot_roc_curve
+
+    X, y = classification_dataset
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+    # Train a simple model
+    clf = LogisticRegression()
+    clf.fit(X_train, y_train)
+    y_pred_train = clf.predict_proba(X_train)[:, 1]  # Select probabilities for class 1
+    y_pred_test = clf.predict_proba(X_test)[:, 1]
+
+    fig = plot_roc_curve(y_true=y_train, y_pred=y_pred_train, label="Train")
+    ax = fig.get_axes()[0]
+    fig = plot_roc_curve(y_true=y_test, y_pred=y_pred_test, ax=ax, label="Test")
+
+    # Check that the figure is a matplotlib Figure
+    assert isinstance(fig, Figure), "plot_roc_curve did not return a matplotlib Figure"
+    axs = fig.get_axes()
+    assert len(axs) == 1, "plot_roc_curve returned multiple subplots"
+    assert axs[0].lines[0].get_label().startswith("Train"), "Train label not found"
