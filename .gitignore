@@ -149,4 +149,4 @@ cython_debug/
 docs/_build
 docs/auto_examples
 
-docs/ds_toolbox*rst
+docs/dfds_ds_toolbox*rst
