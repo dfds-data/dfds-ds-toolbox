@@ -17,6 +17,19 @@ def regression_dataset():
     return datasets.make_regression(random_state=0)
 
 
+@pytest.fixture(scope="function")
+def regression_true_and_pred(regression_dataset):
+    X, y = regression_dataset
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+    # Train a simple model
+    reg = LinearRegression()
+    reg.fit(X_train, y_train)
+    y_pred = reg.predict(X_test)
+
+    return y_test, y_pred
+
+
 def test_prediction_histogram(classification_dataset):
     from dfds_ds_toolbox.analysis.plotting import plot_classification_proba_histogram
 
@@ -76,20 +89,31 @@ def test_gain_chart(classification_dataset):
     assert isinstance(fig, Figure), "plot_gain_chart did not return a matplotlib Figure"
 
 
-def test_plot_regression_predicted_vs_actual(regression_dataset):
+def test_plot_regression_predicted_vs_actual_defaults(regression_true_and_pred):
     from dfds_ds_toolbox.analysis.plotting import plot_regression_predicted_vs_actual
 
-    X, y = regression_dataset
-    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
-
-    # Train a simple model
-    reg = LinearRegression()
-    reg.fit(X_train, y_train)
-    y_pred = reg.predict(X_test)
+    y_true, y_pred = regression_true_and_pred
 
     fig = plot_regression_predicted_vs_actual(
-        y_true=y_test,
+        y_true=y_true,
         y_pred=y_pred,
+    )
+
+    # Check that the figure is a matplotlib Figure
+    assert isinstance(
+        fig, Figure
+    ), "plot_regression_predicted_vs_actual did not return a matplotlib Figure"
+
+
+def test_plot_regression_predicted_vs_actual_alpha_parameter(regression_true_and_pred):
+    from dfds_ds_toolbox.analysis.plotting import plot_regression_predicted_vs_actual
+
+    y_true, y_pred = regression_true_and_pred
+
+    fig = plot_regression_predicted_vs_actual(
+        y_true=y_true,
+        y_pred=y_pred,
+        alpha=0.5,
     )
 
     # Check that the figure is a matplotlib Figure
