@@ -9,7 +9,6 @@ Have a look at https://dfds-ds-toolbox.readthedocs.io for user guide.
 
 Already implemented:
 
-- Feature selector for regression problems
 - Model selector for regression and classification problems
 - Profiling tool for generating stats files of the execution time of a function
 
