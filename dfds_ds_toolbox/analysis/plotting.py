@@ -3,6 +3,7 @@ from typing import List, Sequence
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 from sklearn.metrics import roc_auc_score, roc_curve
 
@@ -165,40 +166,35 @@ def plot_regression_predicted_vs_actual(
     return fig
 
 
-def plot_roc_curve(data_train: pd.DataFrame, data_test: pd.DataFrame, label: str) -> Figure:
+def plot_roc_curve(
+    y_true: Sequence[int], y_pred: Sequence[float], label: str = "Train", ax: Axes = None
+) -> Figure:
     """plot roc curve for train and test
 
     Args:
-        data_train: dataframe containing features and target columns
-        data_test: dataframe containing features and target columns
-        label: extra test to add
+        y_true: array with observed classes
+        y_pred: array with predicted probabilities
+        label: extra text to add, e.g. "Train" or "Test"
+        ax: Optional pre-existing axis to plot on
+
     Returns:
         Figure
     """
-    fpr_train, tpr_train, _ = roc_curve(data_train.target, data_train.predProba)
-    roc_auc_train = roc_auc_score(data_train.target, data_train.predProba)
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.get_figure()
 
-    fig, ax = plt.subplots()
-    lw = 2
-    ax.plot(fpr_train, tpr_train, "red", lw=lw, label="Train (AUC = {0:.2f})".format(roc_auc_train))
-    ax.plot([0, 1], [0, 1], color="black", lw=lw, linestyle="--")
-    if len(data_test) > 0:
-        fpr_test, tpr_test, _ = roc_curve(data_test.target, data_test.predProba)
-        roc_auc_test = roc_auc_score(data_test.target, data_test.predProba)
-        ax.plot(
-            fpr_test,
-            tpr_test,
-            color="blue",
-            lw=lw,
-            label="Test (AUC = {0:.2f})".format(roc_auc_test),
-        )
-    ax.set_xlim([0.0, 1.0])
-    ax.set_ylim([0.0, 1.05])
+    fpr_train, tpr_train, _ = roc_curve(y_true, y_pred)
+    roc_auc = roc_auc_score(y_true, y_pred)
+
+    ax.plot(fpr_train, tpr_train, label=f"{label} (AUC = {roc_auc:.2f})")
+    ax.plot([0, 1], [0, 1], color="black", linestyle="--")
+
     ax.set_xlabel("False Positive Rate")
     ax.set_ylabel("True Positive Rate")
-    ax.set_title("Receiver operating characteristic: " + label)
+    ax.set_title("Receiver operating characteristic")
     ax.legend(loc="lower right")
-    ax.set_aspect("equal", "datalim")
     return fig
 
 
