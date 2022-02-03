@@ -10,8 +10,10 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import Lasso
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import ShuffleSplit
+from sklearn.utils import deprecated
 
 
+@deprecated("Use sklearn.feature_selection.SequentialFeatureSelector instead.")
 def stepwise_selection(
     X: pd.DataFrame,
     y: np.array,
@@ -86,6 +88,7 @@ def stepwise_selection(
     return included
 
 
+@deprecated("Use sklearn.feature_selection.SelectFromModel instead.")
 def rf_prim_columns(
     X: pd.DataFrame, y: pd.Series, n_trees: int = 10, top_cols: int = 10
 ) -> Tuple[pd.DataFrame, List[float]]:
@@ -149,6 +152,7 @@ def rf_prim_columns(
     return (cols_df, score_list)
 
 
+@deprecated("Use sklearn.feature_selection module instead.")
 class RegFeatureSelector:
     """Selects useful features.
 
