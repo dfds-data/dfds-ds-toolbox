@@ -4,49 +4,6 @@ Working examples
 See :doc:`auto_examples/index` for examples of the plotting capabilities.
 
 
-Feature selection
------------------
-Start by importing the feature selection class.::
-
-    from ds_toolbox.feature_selection.feat_selector import RegFeatureSelector
-
-The :py:class:`RegFeatureSelector` class takes a dataframe as input and therefore, the first thing to do is convert the boston data into a pandas dataframe.::
-
-    model_cols = list(boston['feature_names'])
-    df = pd.DataFrame(
-        data = np.c_[boston['data'], boston['target']],
-        columns = model_cols + ['target']
-    )
-
-For training and testing purposes, we will create a train and test dataframe.::
-
-    test = df.sample(frac = 0.2, replace = False)
-    train = df[~df.index.isin(test.index)]
-
-
-The :py:class:`RegFeatureSelector` class implements different strategies for feature selection:
-
-* variance
-* l1
-* rf_feature_importance
-* rf_top_features
-* stepwise
-
-The list of strategies can be extracted from the class object::
-
-    available_strategies = RegFeatureSelector()._available_strategies
-
-Now we are ready to perform the feature selection::
-
-    for strategy in available_strategies:
-        print('\nStrategy=',strategy)
-        fs = RegFeatureSelector(strategy = strategy)
-        X_adj = fs.fit_transform(train[model_cols], train['target'])
-        selected_cols = list(X_adj.columns)
-        print('selected_cols = ',len(selected_cols), sorted(selected_cols))
-
-This code snippet will, for each strategy, print out a list of chosen features, and transform the dataset accordingly.
-
 Model selection
 ---------------
 Start by importing the switcher class from `model_selection`.::
@@ -101,38 +58,39 @@ Using the functionality of the `GridSearchCV`_ module, the results can be accese
 
 Working with pipelines
 ----------------------
-The feature selection and model selection modules can also be tested together using the `pipeline`_ module from sklearn.::
+The model selection modules can also be tested together with transformers using the `pipeline`_ module from sklearn.::
 
     from sklearn.pipeline import Pipeline
+    from sklearn.feature_selection import VarianceThreshold
 
 First, define the pipeline to be test, in this case including both the feature selector and the switcher class::
 
     pipeline = Pipeline(
         [
-            ('feature_selector', RegFeatureSelector()),
+            ('features', VarianceThreshold()),
             ('model', RegSwitcher())
         ]
     )
 
 Next step is to define the estimators and parameters to be tested; in this example we will test a random forest
-regressor and a linear regression model, and then include all available strategies for the feature selector.
+regressor and a linear regression model.
 In principle we could add as many configurations and models as we want to this parameter grid,
 but for simplicity we will just be testing these two.::
 
     parameters = [
         # RandomForestRegressor model and parameters to test
         {
+            'features__threshold': [0.0, 0.1],
             'model__estimator': [RandomForestRegressor()],
             'model__estimator__n_estimators': [150, 200],
             'model__estimator__max_depth': [2, 3],
-            'feature_selector__strategy': available_strategies
         },
 
         # LinearRegression model and parameters to test
         {
+            'features__threshold': [0.0, 0.1],
             'model__estimator': [LinearRegression()],
             'model__estimator__fit_intercept': [True, False],
-            'feature_selector__strategy': available_strategies
         }
     ]
 
@@ -149,7 +107,7 @@ Just as in previous example, this can now be tested using grid search::
     gs.fit(train[model_cols], train['target'])
 
 
-Again, using the functionality of the `GridSearchCV`_ module, the results can be accesed as described above.
+Again, using the functionality of the `GridSearchCV`_ module, the results can be accessed as described above.
 
 Profiling
 ---------
