@@ -23,6 +23,16 @@ def debug_logger():
     """Fixture. Call logger setup with DEBUG level."""
     return init_logger(stream_level="DEBUG")
 
+@pytest.fixture
+def custom_format_logger():
+    """Fixture. Call logger setup with DEBUG level and custom log format."""
+    return init_logger(stream_level="DEBUG", log_format="%(module)s - %(message)s", rich_handler_enabled=False)
+
+@pytest.fixture
+def no_rich_logger():
+    """Fixture. Call logger setup with DEBUG level and no rich handler enable."""
+    return init_logger(stream_level="DEBUG", rich_handler_enabled=False)
+
 
 @pytest.fixture
 def debug_file_info_logger(debug_file):
@@ -97,3 +107,17 @@ def test_wrong_args():
     """Test that we get KeyError when specifying a unsupported stream level"""
     with pytest.raises(ValueError):
         init_logger(stream_level="INF")
+
+def test_wrong_combination_of_args():
+    """Test that we get ValueError when specifying unsupported combination of args"""
+    with pytest.raises(ValueError):
+        init_logger(stream_level="INFO", rich_handler_enabled=True, log_format="%(module)s - %(message)s")
+
+def test_custom_format(custom_format_logger):
+    """Test that we can use custom format"""
+    
+    assert isinstance(custom_format_logger, logging.Logger)
+def test_no_rich_handler(no_rich_logger):
+    """Test that we can use custom format"""
+    
+    assert isinstance(no_rich_logger, logging.Logger)
