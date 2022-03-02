@@ -78,19 +78,35 @@ pip install dfds_ds_toolbox==0.8.0
 
 # Versions
 
-- 0.1.0 => Inclussion of feat selector and model selector
-- 0.2.0 => Fix bugs to install
-- 0.3.0 => Plotting updates (Univariate, Pred_Real, AUC, Lift) Remember to add
-  descriptions of any new versions, please include working examples
-- 0.7.0 => Following new coding guidelines. Functions and variables have been
-  renamed.
-- 0.8.0 => First release on PyPI. Repo moved to GitHub.
+See changelog at
+[GitHub](https://github.com/dfds-data/dfds-ds-toolbox/releases).
 
 # Contribute
 
 We want this library to be useful across many data science projects. If you have
 some standard utilities that you keep using in your projects, please add them
 here and make a PR.
+
+## Releasing a new version
+
+When you want to release a new version of this library to
+[PyPI](https://pypi.org/project/dfds-ds-toolbox/), there is a few steps you must
+follow.
+
+1. Update the version in `setup.py`. We follow
+   [Semantic Versioning](https://semver.org/), so think about if there is any
+   breaking changes in your release when you increment the version.
+2. Draft a new release in
+   [Github](https://github.com/dfds-data/dfds-ds-toolbox/releases/new). You can
+   follow this link or click the "Draft a new release button" on the "releases"
+   page.
+   1. Here you must add a tag in the form "v<VERSION>", for example "v0.9.2".
+      The title should be the same as the tag.
+   2. Add release notes. The easiest is to use the button "Auto-generate release
+      notes". That will pull titles of completed pull requests. Modify as
+      needed.
+3. Click "Publish release". That will build the package, upload to PyPI. It will
+   also build the documentation website.
 
 ## Documentation
 
