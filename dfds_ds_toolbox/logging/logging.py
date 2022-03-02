@@ -58,7 +58,7 @@ def init_logger(
         >>> logger.info("Not coloured text.")
 
         If you want to use a custom log format use:
-        >>> logger = init_logger(stream_level="INFO", log_format="%(module)s - %(message)s")
+        >>> logger = init_logger(stream_level="INFO", log_format="%(module)s - %(message)s", rich_handler_enabled=False)
         >>> logger.info("Custom log format.")
 
     """

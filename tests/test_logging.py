@@ -25,20 +25,6 @@ def debug_logger():
 
 
 @pytest.fixture
-def custom_format_logger():
-    """Fixture. Call logger setup with DEBUG level and custom log format."""
-    return init_logger(
-        stream_level="DEBUG", log_format="%(module)s - %(message)s", rich_handler_enabled=False
-    )
-
-
-@pytest.fixture
-def no_rich_logger():
-    """Fixture. Call logger setup with DEBUG level and no rich handler enable."""
-    return init_logger(stream_level="DEBUG", rich_handler_enabled=False)
-
-
-@pytest.fixture
 def debug_file_info_logger(debug_file):
     """Fixture. Call info logger setup with debug file."""
     return init_logger(debug_file=debug_file, stream_level="INFO")
@@ -107,7 +93,7 @@ def test_debug_file_logging(debug_file_info_logger, debug_file):
     assert debug_file.exists()
 
 
-def test_wrong_args():
+def test_unsupported_combination_rich_and_custom_log_format():
     """Test that we get KeyError when specifying a unsupported stream level"""
     with pytest.raises(ValueError):
         init_logger(stream_level="INF")
@@ -121,13 +107,21 @@ def test_wrong_combination_of_args():
         )
 
 
-def test_custom_format(custom_format_logger):
-    """Test that we can use custom format"""
+def test_custom_format():
+    """Test that we can use custom format logger"""
+    custom_format_logger = init_logger(
+        stream_level="DEBUG", log_format="%(module)s - %(message)s", rich_handler_enabled=False
+    )
 
-    assert isinstance(custom_format_logger, logging.Logger)
+    assert isinstance(
+        custom_format_logger, logging.Logger
+    ), "Custom format logger could not be initialized"
 
 
-def test_no_rich_handler(no_rich_logger):
-    """Test that we can use custom format"""
+def test_no_rich_handler():
+    """Test that we can use logger without rich handler"""
+    no_rich_logger = init_logger(stream_level="DEBUG", rich_handler_enabled=False)
 
-    assert isinstance(no_rich_logger, logging.Logger)
+    assert isinstance(
+        no_rich_logger, logging.Logger
+    ), "Logger without rich handler could not be initialized"
