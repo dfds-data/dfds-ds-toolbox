@@ -65,6 +65,7 @@ def init_logger(
 
     # Set up logger
     logger = logging.getLogger(name)
+    # Setting logger root level (it could be override by specific handler levels)
     logger.setLevel(logging.DEBUG)
     if rich_handler_enabled and log_format is not None:
         raise ValueError("Rich handler and custom log format cannot be used together")
@@ -91,6 +92,7 @@ def init_logger(
     else:
         handler = logging.StreamHandler()
         handler.setFormatter(logging.Formatter(log_format))
+        handler.setLevel(level=stream_level)
     logger.addHandler(handler)
 
     return logger
