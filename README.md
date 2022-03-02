@@ -105,8 +105,10 @@ follow.
    2. Add release notes. The easiest is to use the button "Auto-generate release
       notes". That will pull titles of completed pull requests. Modify as
       needed.
-3. Click "Publish release". That will build the package, upload to PyPI. It will
-   also build the documentation website.
+3. Click "Publish release". That will start a
+   [Github Action](https://github.com/dfds-data/dfds-ds-toolbox/actions) that
+   will build the package and upload to PyPI. It will also build the
+   documentation website.
 
 ## Documentation
 
