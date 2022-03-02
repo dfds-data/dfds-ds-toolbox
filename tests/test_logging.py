@@ -35,6 +35,7 @@ def debug_file(tmp_path):
     """Fixture. Generate debug file location for tests."""
     return tmp_path.joinpath("pytest-plugin.log")
 
+
 def test_instance_logger():
     """Test we can create instance of logger."""
     logger = init_logger()
@@ -125,13 +126,18 @@ def test_no_rich_handler():
         no_rich_logger, logging.Logger
     ), "Logger without rich handler could not be initialized"
 
+
 def test_info_level_no_rich_handler():
     """Test that the level is right for logger without rich handler"""
     no_rich_logger_info = init_logger(stream_level="INFO", rich_handler_enabled=False)
-    assert no_rich_logger_info.handlers[0].level == logging.INFO, "Stream level of the handler is not INFO"
+    assert (
+        no_rich_logger_info.handlers[0].level == logging.INFO
+    ), "Stream level of the handler is not INFO"
 
 
 def test_default_level_no_rich_handler():
     """Test that the default level is right for logger without rich handler"""
     no_rich_logger_default = init_logger(rich_handler_enabled=False)
-    assert no_rich_logger_default.handlers[0].level == logging.WARNING, "Stream level of the handler is not WARNING (default logger root level)"
+    assert (
+        no_rich_logger_default.handlers[0].level == logging.WARNING
+    ), "Stream level of the handler is not WARNING (default logger root level)"
