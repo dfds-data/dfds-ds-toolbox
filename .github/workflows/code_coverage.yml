@@ -29,7 +29,7 @@ jobs:
 
     - name: pytester-cov
       id: pytester-cov
-      uses: alexanderdamiani/pytester-cov@v1.2.0
+      uses: programmingwithalex/pytester-cov@main
       with:
         pytest-root-dir: '.'
         cov-omit-list: 'tests/*, docs/*, setup.py, examples/*'
