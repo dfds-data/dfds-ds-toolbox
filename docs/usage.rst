@@ -8,7 +8,7 @@ Model selection
 ---------------
 Start by importing the switcher class from `model_selection`.::
 
-    from ds_toolbox.model_selection.model_selection import ClfSwitcher, RegSwitcher
+    from dfds_ds_toolbox.model_selection.model_selection import ClfSwitcher, RegSwitcher
 
 In this module there are two switcher classes; one for classification (:py:class:`ClfSwitcher`)
 and one for regression (:py:class:`RegSwitcher`). The switcher classes each implement a base class that
@@ -118,7 +118,7 @@ An example of implementation can be found in  with the ``@profileit()`` decorato
 
 We can then add the decorator to whatever function we want to profile::
 
-    from ds_toolbox.profiling.profiling import profileit
+    from dfds_ds_toolbox.profiling.profiling import profileit
     from pathlib import Path
 
     @profileit(path=Path("profiles/"), name="main_script_profile")
@@ -140,7 +140,7 @@ The logging module allows you to easily log in console or/and in a debug file wi
 
 Usage::
 
-    >>> from ds_toolbox.logging.logging import init_logger
+    >>> from dfds_ds_toolbox.logging.logging import init_logger
     >>> logger = init_logger()
     >>> logger.info("This message will not be logged.")
     >>> logger.critical("Something BAD happened.")
