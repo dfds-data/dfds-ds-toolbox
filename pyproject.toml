@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dfds_ds_toolbox"
-version = "0.9.2"
+version = "0.10.0"
 description = "A toolbox for data science"
 license = "MIT"
 authors = ["Data Science Chapter at DFDS <urcha@dfds.com>"]
