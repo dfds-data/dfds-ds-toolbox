@@ -10,10 +10,6 @@ build:
   os: ubuntu-20.04
   tools:
     python: "3.10"
-  # Use poetry to export the requirements.txt file
-  jobs:
-    pre_create_environment:
-      - pip install poetry --user && poetry export -f requirements.txt -o tmp_requirements.txt && poetry export -f requirements.txt -o tmp_requirements-dev.txt
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
@@ -23,8 +19,8 @@ sphinx:
 # formats:
 #    - pdf
 
-# Optionally declare the Python requirements required to build your docs
 python:
-   install:
-   - requirements: tmp_requirements.txt
-   - requirements: tmp_requirements-dev.txt
+  install:
+    - requirements: docs/requirements.txt
+    - method: pip
+      path: .
