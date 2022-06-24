@@ -13,9 +13,7 @@ build:
   # Use poetry to export the requirements.txt file
   jobs:
     pre_create_environment:
-      - pip install poetry
-      - poetry export -f requirements.txt -o tmp_requirements.txt
-      - poetry export -f requirements.txt -o tmp_requirements-dev.txt
+      - pip install poetry --user && poetry export -f requirements.txt -o tmp_requirements.txt && poetry export -f requirements.txt -o tmp_requirements-dev.txt
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
