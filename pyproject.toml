@@ -1,3 +1,44 @@
+[tool.poetry]
+name = "dfds_ds_toolbox"
+version = "0.10.0"
+description = "A toolbox for data science"
+license = "MIT"
+authors = ["Data Science Chapter at DFDS <urcha@dfds.com>"]
+classifiers = [
+        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "License :: OSI Approved :: MIT License",
+]
+packages = [
+    { include = "dfds_ds_toolbox" }
+]
+repository = "https://github.com/dfds-data/dfds-ds-toolbox"
+homepage = "https://dfds-ds-toolbox.readthedocs.io"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.11"
+statsmodels = "^0.13"
+scikit-learn = "^1.0"
+pandas = "^1.0"
+matplotlib = "^3.4"
+rich = "^12.0"
+scipy = ">1.7.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.2"
+black = "^22.3.0"
+pre-commit = "^2.19.0"
+jupyter = "^1.0.0"
+jupyterlab = "^3.4.3"
+pytest-cov = "^3.0.0"
+
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 100
 include = '\.pyi?$'

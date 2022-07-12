@@ -38,26 +38,17 @@ the classes can be found in later sections.
 
 ## Install locally
 
-Make a virtual environment:
+We use poetry as the package manager and build tool. Make sure you have poetry
+installed locally, then run
 
 ```shell
-python -m venv venv
-venv\Scripts\activate.bat
-```
-
-Install dependencies
-
-```shell
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
-pre-commit install
-pip install -e .
+poetry install
 ```
 
 Run tests to see everything working
 
 ```shell
-pytest
+poetry run pytest
 ```
 
 ## Install this library in another repo
@@ -120,6 +111,7 @@ https://dfds-ds-toolbox.readthedocs.io
 To build the documentation locally run:
 
 ```shell
+pip install -r docs/requirements.txt
 cd docs/
 sphinx-apidoc -o . ../dfds_ds_toolbox/ ../*tests*
 make html
