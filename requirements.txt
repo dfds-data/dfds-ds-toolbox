@@ -1,6 +1,0 @@
-statsmodels
-scikit-learn
-pandas
-numpy
-matplotlib==3.4.3
-rich==10.12.0
