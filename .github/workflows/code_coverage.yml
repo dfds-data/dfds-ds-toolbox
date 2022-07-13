@@ -30,7 +30,7 @@ jobs:
 
     - name: Build coverage file
       run: |
-        poetry run pytest --cache-clear --cov=dfds_ds_toolbox test/ > pytest-coverage.txt
+        poetry run pytest --cache-clear --cov=dfds_ds_toolbox tests/ > pytest-coverage.txt
 
     - name: pytest-coverage-commentator
       uses: coroo/pytest-coverage-commentator@v1.0.2
