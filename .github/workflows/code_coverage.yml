@@ -1,4 +1,4 @@
-name: pytester-cov workflow
+name: pytest coverage workflow
 
 on:
   workflow_dispatch:
@@ -11,10 +11,6 @@ jobs:
   coverage:
 
     runs-on: ubuntu-latest
-    env:
-      COVERAGE_SINGLE: 50
-      COVERAGE_TOTAL: 50
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -22,34 +18,21 @@ jobs:
       with:
         python-version: "3.10"
 
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: 1.1.14
+        virtualenvs-create: false
+
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
+        poetry install --no-interaction
 
-    - name: pytester-cov
-      id: pytester-cov
-      uses: programmingwithalex/pytester-cov@main
-      with:
-        pytest-root-dir: '.'
-        cov-omit-list: 'tests/*, docs/*, examples/*'
-        cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
-        cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
-
-    - name: Commit pytest coverage table
-      uses: peter-evans/commit-comment@v1
-      with:
-        body: ${{ steps.pytester-cov.outputs.output-table }}
-
-#    - name: Coverage single fail - exit
-#      if: ${{ steps.pytester-cov.outputs.cov-threshold-single-fail == 'true' }}
-#      run: |
-#        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-single-fail }}"
-#        exit 1
-
-    - name: Coverage total fail - exit
-      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
+    - name: Build coverage file
       run: |
-        echo "cov total fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
-        echo "coverage report ${{ steps.pytester-cov.outputs.output-table }}"
-        exit 1
+        poetry run pytest --cache-clear --cov=dfds_ds_toolbox tests/ > pytest-coverage.txt
+
+    - name: pytest-coverage-commentator
+      uses: coroo/pytest-coverage-commentator@v1.0.2
+      with:
+        pytest-coverage: pytest-coverage.txt
