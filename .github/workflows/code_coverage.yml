@@ -28,9 +28,9 @@ jobs:
         version: 1.1.14
         virtualenvs-create: false
 
-    - name: Install dependencies
+    - name: export dependencies
       run: |
-        poetry install --no-interaction
+        poetry export --format requirements.txt --output requirements.txt --dev
 
     - name: pytester-cov
       id: pytester-cov
