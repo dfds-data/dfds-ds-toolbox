@@ -34,6 +34,7 @@ pre-commit = "^2.19.0"
 jupyter = "^1.0.0"
 jupyterlab = "^3.4.3"
 pytest-cov = "^3.0.0"
+coverage = {extras = ["toml"], version = "^6.4.2"}
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
@@ -59,3 +60,6 @@ exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 100
+
+[tool.coverage.run]
+omit = ["*/__init__.py"]
