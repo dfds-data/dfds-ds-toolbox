@@ -17,6 +17,8 @@ packages = [
 ]
 repository = "https://github.com/dfds-data/dfds-ds-toolbox"
 homepage = "https://dfds-ds-toolbox.readthedocs.io"
+readme = "README.md"
+documentation = "https://dfds-ds-toolbox.readthedocs.io"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
