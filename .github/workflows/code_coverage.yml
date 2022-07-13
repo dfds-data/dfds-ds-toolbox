@@ -1,4 +1,4 @@
-name: pytester-cov workflow
+name: pytest coverage workflow
 
 on:
   workflow_dispatch:
