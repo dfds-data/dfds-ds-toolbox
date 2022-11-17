@@ -15,7 +15,9 @@ from dfds_ds_toolbox.analysis.plotting_utils import (
 )
 
 
-def plot_classification_proba_histogram(y_true: Sequence[int], y_pred: Sequence[float], ax: Axes = None) -> Figure:
+def plot_classification_proba_histogram(
+    y_true: Sequence[int], y_pred: Sequence[float], ax: Axes = None
+) -> Figure:
     """Plot histogram of predictions for binary classifiers.
 
     Args:
@@ -208,7 +210,9 @@ def plot_roc_curve(
     return fig
 
 
-def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10, ax: Axes = None) -> Figure:
+def plot_lift_curve(
+    y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10, ax: Axes = None
+) -> Figure:
     """Plot lift curve, i.e. how much better than baserate is the model at different thresholds.
 
     Lift of 1 corresponds to predicting the baserate for the whole sample.
@@ -248,7 +252,9 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     return fig
 
 
-def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10, ax: Axes = None) -> Figure:
+def plot_gain_chart(
+    y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10, ax: Axes = None
+) -> Figure:
     """The cumulative gains chart shows the percentage of the overall number of cases in a given
      category "gained" by targeting a percentage of the total number of cases.
 
