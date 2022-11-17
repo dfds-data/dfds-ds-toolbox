@@ -15,14 +15,18 @@ from dfds_ds_toolbox.analysis.plotting_utils import (
 )
 
 
-def plot_classification_proba_histogram(y_true: Sequence[int], y_pred: Sequence[float]) -> Figure:
+def plot_classification_proba_histogram(y_true: Sequence[int], y_pred: Sequence[float], ax: Axes = None) -> Figure:
     """Plot histogram of predictions for binary classifiers.
 
     Args:
         y_true: 1D array of binary target values, 0 or 1.
         y_pred: 1D array of predicted target values, probability of class 1.
+        ax: Optional pre-existing axis to plot on
     """
-    fig, ax = plt.subplots()
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.get_figure()
     bins = np.linspace(0, 1, 11)
     df = pd.DataFrame()
     df["Actual class"] = y_true
@@ -144,7 +148,7 @@ def get_trend_stats(
 
 
 def plot_regression_predicted_vs_actual(
-    y_true: Sequence[float], y_pred: Sequence[float], alpha: float = 0.2
+    y_true: Sequence[float], y_pred: Sequence[float], alpha: float = 0.2, ax: Axes = None
 ) -> Figure:
     """Scatter plot of the predicted vs true targets for regression problems.
 
@@ -152,11 +156,17 @@ def plot_regression_predicted_vs_actual(
         y_true: array with observed values
         y_pred: array with predicted values
         alpha: transparency of the dots on the scatter plot
+        ax: Optional pre-existing axis to plot on
+
 
     Returns:
         Figure
     """
-    fig, ax = plt.subplots()
+
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.get_figure()
     min_val = min(min(y_true), min(y_pred))
     max_val = max(max(y_true), max(y_pred))
     ax.plot([min_val, max_val], [min_val, max_val])
@@ -198,7 +208,7 @@ def plot_roc_curve(
     return fig
 
 
-def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10) -> Figure:
+def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10, ax: Axes = None) -> Figure:
     """Plot lift curve, i.e. how much better than baserate is the model at different thresholds.
 
     Lift of 1 corresponds to predicting the baserate for the whole sample.
@@ -207,11 +217,16 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
         y_true: array with observed values, either 0 or 1.
         y_pred: array with predicted probabilities, float between 0 and 1.
         n_bins: number of bins to use
+        ax: Optional pre-existing axis to plot on
+
 
     Returns:
         matplotlib Figure
     """
-    fig, ax = plt.subplots()
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.get_figure()
     # Ensure numpy arrays. Save to new variable to avoid redefining a type. Mypy doesn't like that.
     y_true_array = np.array(y_true)
     y_pred_array = np.array(y_pred)
@@ -233,7 +248,7 @@ def plot_lift_curve(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
     return fig
 
 
-def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10) -> Figure:
+def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int = 10, ax: Axes = None) -> Figure:
     """The cumulative gains chart shows the percentage of the overall number of cases in a given
      category "gained" by targeting a percentage of the total number of cases.
 
@@ -241,11 +256,15 @@ def plot_gain_chart(y_true: Sequence[int], y_pred: Sequence[float], n_bins: int 
         y_true: array with observed values, either 0 or 1.
         y_pred: array with predicted probabilities, float between 0 and 1.
         n_bins: number of bins to use
+        ax: Optional pre-existing axis to plot on
 
     Returns:
         matplotlib Figure
     """
-    fig, ax = plt.subplots()
+    if ax is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = ax.get_figure()
     # Ensure numpy arrays. Save to new variable to avoid redefining a type. Mypy doesn't like that.
     y_true_array = np.array(y_true)
     y_pred_array = np.array(y_pred)
