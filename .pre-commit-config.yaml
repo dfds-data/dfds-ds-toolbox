@@ -44,8 +44,8 @@ repos:
 -   repo: https://github.com/PyCQA/flake8
     rev: 5.0.4
     hooks:
-    - id: flake8
-      additional_dependencies:
+    -   id: flake8
+        additional_dependencies:
           - flake8-unused-arguments
           - flake8-bugbear
           - pep8-naming
