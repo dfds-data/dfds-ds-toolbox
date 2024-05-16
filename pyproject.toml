@@ -1,42 +1,42 @@
 [tool.poetry]
 name = "dfds_ds_toolbox"
-version = "0.10.2"
+version = "0.10.3"
 description = "A toolbox for data science"
 license = "MIT"
 authors = ["Data Science Chapter at DFDS <urcha@dfds.com>"]
 classifiers = [
-        "Development Status :: 3 - Alpha",
-        "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "License :: OSI Approved :: MIT License",
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "License :: OSI Approved :: MIT License",
 ]
-packages = [
-    { include = "dfds_ds_toolbox" }
-]
+packages = [{ include = "dfds_ds_toolbox" }]
 repository = "https://github.com/dfds-data/dfds-ds-toolbox"
 homepage = "https://dfds-ds-toolbox.readthedocs.io"
 readme = "README.md"
 documentation = "https://dfds-ds-toolbox.readthedocs.io"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
-statsmodels = "^0.13"
+python = ">=3.10,<3.12"
+statsmodels = "^0.14"
 scikit-learn = "^1.0"
-pandas = "^1.0"
-matplotlib = "^3.4"
-rich = "^12.0"
+pandas = "^2.0"
+matplotlib = "^3.8"
+rich = "^13.0"
 scipy = ">1.7.2"
 
-[tool.poetry.dev-dependencies]
-pytest = "^7.1.2"
-black = "^22.3.0"
-pre-commit = "^2.19.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.4.4"
+pytest = "^8.2"
+pre-commit = "^3.7"
 jupyter = "^1.0.0"
-jupyterlab = "^3.4.3"
-pytest-cov = "^3.0.0"
-coverage = {extras = ["toml"], version = "^6.4.2"}
+jupyterlab = "^4.2"
+pytest-cov = "^5.0"
+coverage = { extras = ["toml"], version = "^6.4.2" }
+
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
@@ -65,3 +65,61 @@ line_length = 100
 
 [tool.coverage.run]
 omit = ["*/__init__.py"]
+
+[tool.ruff]
+# See rules: https://beta.ruff.rs/docs/rules
+lint.select = [
+  "ANN001", # flake8-annotations
+  "ANN201", # flake8-annotations
+  "B",      # flake8-bugbear
+  "C90",    # mccabe complexity
+  "E",      # pycodestyle
+  "F",      # pyflakes
+  "I",      # isort
+  "PD",     # pandas-vet
+  "RUF100", # unused noqa directive
+  "S",      # flake8-bandit
+]
+
+lint.ignore = ["E501", "PD901"] # Avoid enforcing line-length violations
+
+# More settings: https://beta.ruff.rs/docs/settings/
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+lint.fixable = ["A", "B", "C", "D", "E", "F", "I"]
+lint.unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+  ".bzr",
+  ".direnv",
+  ".eggs",
+  ".git",
+  ".hg",
+  ".mypy_cache",
+  ".nox",
+  ".pants.d",
+  ".pytype",
+  ".ruff_cache",
+  ".svn",
+  ".tox",
+  ".venv",
+  "__pypackages__",
+  "_build",
+  "buck-out",
+  "build",
+  "dist",
+  "node_modules",
+  "venv",
+]
+
+# Same as Black.
+line-length = 100
+
+# Allow unused variables when underscore-prefixed.
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.11.
+target-version = "py311"
+
+[tool.ruff.lint.isort]
+known-first-party = ["dfds_ds_toolbox"]

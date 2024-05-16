@@ -1,6 +1,5 @@
 import logging
 from pathlib import Path
-from typing import Union
 
 from rich.logging import RichHandler
 
@@ -14,9 +13,9 @@ LOG_FORMATS = {
 def init_logger(
     name: str = None,
     stream_level: str = "WARNING",
-    debug_file: Union[Path, str] = None,
+    debug_file: Path | str | None = None,
     rich_handler_enabled: bool = True,
-    log_format: str = None,
+    log_format: str | None = None,
 ) -> logging.Logger:
     """Initialize a logger.
 

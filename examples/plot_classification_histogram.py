@@ -5,6 +5,7 @@ Histogram of predicted probabilities
 When doing a classification, we want to see how much overlap there is in
 the predicted probabilities.
 """
+
 from sklearn.datasets import make_classification
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split

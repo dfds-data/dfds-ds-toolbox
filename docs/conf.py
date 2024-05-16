@@ -12,6 +12,7 @@
 #
 import os
 import sys
+from typing import Any
 
 sys.path.insert(0, os.path.abspath("../"))
 
@@ -19,7 +20,7 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "dfds_ds_toolbox"
-copyright = "2021, Data Science Chapter, D&A"  # noqa[A001]
+copyright = "2021, Data Science Chapter, D&A"
 author = "Data Science Chapter, D&A"
 
 # The full version, including alpha/beta/rc tags
@@ -70,7 +71,7 @@ html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
 
 
-def run_apidoc(_):
+def run_apidoc(_: Any) -> None:
     import os
     import sys
 
@@ -82,5 +83,5 @@ def run_apidoc(_):
     main(["-e", "-o", cur_dir, module, "--force"])
 
 
-def setup(app):
+def setup(app: Any) -> None:
     app.connect("builder-inited", run_apidoc)

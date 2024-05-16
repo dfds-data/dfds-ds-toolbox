@@ -84,7 +84,7 @@ When you want to release a new version of this library to
 [PyPI](https://pypi.org/project/dfds-ds-toolbox/), there is a few steps you must
 follow.
 
-1. Update the version in `setup.py`. We follow
+1. Update the version in `pyproject.toml`. We follow
    [Semantic Versioning](https://semver.org/), so think about if there is any
    breaking changes in your release when you increment the version.
 2. Draft a new release in

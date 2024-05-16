@@ -1,4 +1,5 @@
-from typing import List, Sequence
+from collections.abc import Sequence
+from typing import overload
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -47,13 +48,29 @@ def plot_classification_proba_histogram(
     return fig
 
 
+@overload
+def plot_univariate_dependencies(
+    data: pd.DataFrame, target_col: str, features_list: list[str] | None, bins: int
+) -> pd.DataFrame: ...
+
+
+@overload
 def plot_univariate_dependencies(
     data: pd.DataFrame,
     target_col: str,
-    features_list: List[str] = None,
+    features_list: list[str] | None,
+    bins: int,
+    data_test: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.DataFrame]: ...
+
+
+def plot_univariate_dependencies(
+    data: pd.DataFrame,
+    target_col: str,
+    features_list: list[str] | None = None,
     bins: int = 10,
-    data_test: pd.DataFrame = None,
-):
+    data_test: pd.DataFrame | None = None,
+) -> Figure:
     """Creates univariate dependence plots for features in the dataset
 
     Args:
@@ -72,17 +89,18 @@ def plot_univariate_dependencies(
 
     for cols in features_list:
         if cols != target_col and data[cols].dtype == "O":
-            print(cols + " is categorical. Categorical features not supported yet.")
+            raise ValueError(cols + " is categorical. Categorical features not supported yet.")
         elif cols != target_col and data[cols].dtype != "O":
-            _univariate_plotter(
+            fig = _univariate_plotter(
                 feature=cols, data=data, target_col=target_col, bins=bins, data_test=data_test
             )
+            return fig
 
 
 def get_trend_stats(
     data: pd.DataFrame,
     target_col: str,
-    features_list: List[str] = None,
+    features_list: list[str] = None,
     bins: int = 10,
     data_test: pd.DataFrame = None,
 ) -> pd.DataFrame:

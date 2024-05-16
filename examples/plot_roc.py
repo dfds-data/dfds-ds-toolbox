@@ -4,6 +4,7 @@ Plot ROC (Receiver operating characteristic)
 
 Given a trained model, it showcase the Area under the curve of both train and test data.
 """
+
 from sklearn import datasets, model_selection, svm
 
 from dfds_ds_toolbox.analysis.plotting import plot_roc_curve
