@@ -4,6 +4,7 @@ Regression results (Pred vs Real)
 
 Given a trained model, it showcase the performance, along a error band
 """
+
 import numpy as np
 from sklearn.datasets import load_diabetes
 from sklearn.ensemble import RandomForestRegressor

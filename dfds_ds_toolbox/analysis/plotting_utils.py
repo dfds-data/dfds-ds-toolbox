@@ -1,7 +1,8 @@
 """
 Helper functions for dfds_ds_toolbox.analysis.plotting.
 """
-from typing import List, Union
+
+from typing import overload
 
 import numpy as np
 import pandas as pd
@@ -14,7 +15,7 @@ def _get_equally_grouped_data(
     feature: str,
     target_col: str,
     bins: int,
-    cuts: Union[int, List[int]] = None,
+    cuts: int | list[int] | None = None,
 ):
     """Bins continuous features into equal sample size buckets and returns the target mean in each bucket.
     Separates out nulls into another bucket.
@@ -31,11 +32,12 @@ def _get_equally_grouped_data(
     Returns:
         If cuts are passed only grouped data is returned, else cuts and grouped data is returned
     """
-    has_null = pd.isnull(input_data[feature]).sum() > 0
-    if has_null == 1:
-        data_null = input_data[pd.isnull(input_data[feature])]
-        input_data = input_data[~pd.isnull(input_data[feature])]
-        input_data.reset_index(inplace=True, drop=True)
+    null_indices = input_data[feature].isna()
+    has_null = null_indices.any()
+    if null_indices.any():
+        data_null = input_data.loc[null_indices, feature]
+        input_data = input_data.loc[~null_indices, feature]
+        input_data = input_data.reset_index(drop=True)
 
     is_train = 0
     if cuts is None:
@@ -56,12 +58,12 @@ def _get_equally_grouped_data(
     else:
         cut_series = pd.cut(input_data[feature], cuts)
 
-    grouped = input_data.groupby([cut_series], as_index=True).agg(
-        {target_col: [np.size, np.mean], feature: [np.mean]}
+    grouped = input_data.groupby([cut_series], as_index=True, observed=True).agg(
+        {target_col: ["size", "mean"], feature: ["mean"]}
     )
-    grouped.columns = ["_".join(cols).strip() for cols in grouped.columns.values]
+    grouped.columns = ["_".join(cols).strip() for cols in grouped.columns.to_numpy()]
     grouped[grouped.index.name] = grouped.index
-    grouped.reset_index(inplace=True, drop=True)
+    grouped = grouped.reset_index(drop=True)
     grouped = grouped[[feature] + list(grouped.columns[0:3])]
     grouped = grouped.rename(index=str, columns={target_col + "_size": "Samples_in_bin"})
     grouped = grouped.reset_index(drop=True)
@@ -85,7 +87,7 @@ def _get_equally_grouped_data(
         grouped_null.loc[0, feature + "_mean"] = np.nan
         grouped[feature] = grouped[feature].astype("str")
         grouped = pd.concat([grouped_null, grouped], axis=0)
-        grouped.reset_index(inplace=True, drop=True)
+        grouped = grouped.reset_index(drop=True)
 
     grouped[feature] = grouped[feature].astype("str").astype("category")
     if is_train == 1:
@@ -152,8 +154,9 @@ def _get_trend_correlation(
         how="left",
         suffixes=("", "_test"),
     )
-    nan_rows = pd.isnull(grouped_test_train[target_col + "_mean"]) | pd.isnull(
-        grouped_test_train[target_col + "_mean_test"]
+    nan_rows = nan_rows = (
+        grouped_test_train[target_col + "_mean"].isna()
+        | grouped_test_train[target_col + "_mean_test"].isna()
     )
     grouped_test_train = grouped_test_train.loc[~nan_rows, :]
     if len(grouped_test_train) > 1:
@@ -167,13 +170,23 @@ def _get_trend_correlation(
     return trend_correlation
 
 
+@overload
+def _univariate_plotter(feature: str, data: pd.DataFrame, target_col: str, bins: int) -> Figure: ...
+
+
+@overload
+def _univariate_plotter(
+    feature: str, data: pd.DataFrame, target_col: str, bins: int, data_test: pd.DataFrame
+) -> tuple[Figure, Figure]: ...
+
+
 def _univariate_plotter(
     feature: str,
     data: pd.DataFrame,
     target_col: str,
-    bins: int = 10,
-    data_test: pd.DataFrame = None,
-):
+    bins: int,
+    data_test: pd.DataFrame | None = None,
+) -> Figure | tuple[Figure, Figure]:
     """Calls the draw plot function and editing around the plots
 
     Helper function for `get_univariate_plots`.
@@ -190,12 +203,17 @@ def _univariate_plotter(
     """
     print(" {:^100} ".format("Plots for " + feature))
     if data[feature].dtype == "O":
-        print("Categorical feature not supported")
+        raise ValueError("Categorical feature is not supported")
     else:
         cuts, grouped = _get_equally_grouped_data(
             input_data=data, feature=feature, target_col=target_col, bins=bins
         )
+
+        train_plot = _draw_single_univariate_dependency(
+            input_data=grouped, feature=feature, target_col=target_col
+        )
         has_test = type(data_test) == pd.core.frame.DataFrame
+
         if has_test:
             grouped_test = _get_equally_grouped_data(
                 input_data=data_test.reset_index(drop=True),  # type: ignore[union-attr]
@@ -205,28 +223,18 @@ def _univariate_plotter(
                 cuts=cuts,
             )
             trend_corr = _get_trend_correlation(grouped, grouped_test, feature, target_col)
-            print(" {:^100} ".format("Train data plots"))
 
-            _draw_single_univariate_dependency(
-                input_data=grouped, feature=feature, target_col=target_col
-            )
             print(" {:^100} ".format("Test data plots"))
 
-            _draw_single_univariate_dependency(
+            test_plot = _draw_single_univariate_dependency(
                 input_data=grouped_test,
                 feature=feature,
                 target_col=target_col,
                 trend_correlation=trend_corr,
             )
-        else:
-            _draw_single_univariate_dependency(
-                input_data=grouped, feature=feature, target_col=target_col
-            )
-        print("\n")
-        if has_test:
-            return (grouped, grouped_test)
-        else:
-            return grouped
+            return (train_plot, test_plot)
+
+        return train_plot
 
 
 def _draw_single_univariate_dependency(

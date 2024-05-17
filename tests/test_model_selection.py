@@ -7,12 +7,12 @@ from sklearn.model_selection import GridSearchCV
 from dfds_ds_toolbox.model_selection.model_selection import ClfSwitcher, RegSwitcher
 
 
-def get_data(model_type):
+def get_data(model_type: str):
     # Load dataset
     if model_type == "clf":
         return datasets.load_iris()
     elif model_type == "reg":
-        return datasets.load_boston()
+        return datasets.fetch_california_housing()
 
 
 def test_ClfSwitcher():

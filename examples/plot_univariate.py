@@ -22,5 +22,8 @@ data_test["target"] = y_test
 
 # plots univariate plots of first 10 columns in data_train
 plot_univariate_dependencies(
-    data=data_train, target_col="target", features_list=features, data_test=data_test
+    data=data_train,  # type: ignore
+    target_col="target",
+    features_list=features,
+    data_test=data_test,
 )

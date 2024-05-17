@@ -1,7 +1,7 @@
 import cProfile
+from collections.abc import Callable
 from functools import wraps
 from pathlib import Path
-from typing import Callable
 
 
 def profileit(path: Path, name: str) -> Callable:

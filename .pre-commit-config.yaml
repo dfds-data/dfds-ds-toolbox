@@ -3,52 +3,43 @@
 # Update this file:
 #   pre-commit autoupdate
 repos:
-# format markdown files
--   repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v2.3.2"
-    hooks:
-        - id: prettier
-          types: [ markdown ]
-          args: [ "--prose-wrap", "always" ]
+    # format markdown files
+    - repo: https://github.com/pre-commit/mirrors-prettier
+      rev: "v2.3.2"
+      hooks:
+          - id: prettier
+            types: [markdown]
+            args: ["--prose-wrap", "always"]
 
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
-    hooks:
-    -   id: check-json
-    -   id: check-yaml
-    -   id: debug-statements
-    -   id: detect-aws-credentials
-        args: [--allow-missing-credentials]
-    -   id: detect-private-key
-    -   id: check-merge-conflict
-    -   id: check-added-large-files
-        args: ['--maxkb=3000']
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.0.1
+      hooks:
+          - id: check-json
+          - id: check-yaml
+          - id: debug-statements
+          - id: detect-aws-credentials
+            args: [--allow-missing-credentials]
+          - id: detect-private-key
+          - id: check-merge-conflict
+          - id: check-added-large-files
+            args: ["--maxkb=3000"]
 
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.910
-    hooks:
-    -   id: mypy
-        args: [--ignore-missing-imports]
+    - repo: https://github.com/astral-sh/ruff-pre-commit
+      rev: "v0.3.4"
+      hooks:
+          - id: ruff
+            args: [--fix, --exit-non-zero-on-fix, --exclude=tests] #TODO: remove exclude tests
+          - id: ruff-format
 
--   repo: https://github.com/pycqa/isort
-    rev: 5.9.3
-    hooks:
-    - id: isort
-      name: isort
+    - repo: https://github.com/pre-commit/mirrors-mypy
+      rev: v0.910
+      hooks:
+          - id: mypy
+            args: [--ignore-missing-imports]
 
--   repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-    -   id: black
-
--   repo: https://github.com/PyCQA/flake8
-    rev: 5.0.4
-    hooks:
-    -   id: flake8
-        additional_dependencies:
-          - flake8-unused-arguments
-          - flake8-bugbear
-          - pep8-naming
-          - flake8-annotations
-          - flake8-builtins
-          - flake8-docstrings
+    # Fix coding patterns from old Python versions
+    - repo: https://github.com/asottile/pyupgrade
+      rev: v3.15.2
+      hooks:
+          - id: pyupgrade
+            args: [--py311-plus]
